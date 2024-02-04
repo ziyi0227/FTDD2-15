@@ -1,0 +1,26 @@
+server:
+  port: 6666
+
+admin:
+  username: ftdd2
+  password: 123456
+
+spring:
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql:///ft_demo
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+logging:
+  level:
+    com.ftdd2: debug
+
+
+# 驼峰命名转下划线命名
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
