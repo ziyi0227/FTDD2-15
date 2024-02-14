@@ -1,0 +1,5 @@
+alioss:
+    endpoint: oss-cn-hangzhou.aliyuncs.com
+    access-key-id: LTAI5tAXRFMD3u9Z1vEKd9KF
+    access-key-secret: mpOsSSkubmUpMVHNcvXD6FqHHqR5Q3
+    bucket-name: sky-take-out-runa
