@@ -16,7 +16,8 @@ public class CodeGenerator {
         String author = "ftdd2";
         String moduleName = "sys";
         String mapperLocation = "D:\\code\\FTDD2-15\\src\\main\\resources\\mapper\\" + moduleName;
-        String tables = "";
+        String tables = "address_table,admin,company,favor,job_category,job_table,menu_table,resume,role_menu,salary_table," +
+                "user_role,users";
         FastAutoGenerator.create(url, username, password)
                 .globalConfig(builder -> {
                     builder.author(author) // 设置作者
@@ -34,7 +35,7 @@ public class CodeGenerator {
 
                 }))
                 .packageConfig(builder -> {
-                    builder.parent("com.ftdd2.ftdd215") // 设置父包名
+                    builder.parent("com.ftdd2") // 设置父包名
                             .moduleName(moduleName) // 设置父包模块名
                             .pathInfo(Collections.singletonMap(OutputFile.xml, mapperLocation)); // 设置mapperXml生成路径
                 })
