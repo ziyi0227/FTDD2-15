@@ -1,9 +1,9 @@
-package com.ftdd2.ftdd215.config;
+package com.ftdd2.config;
 
 
 
-import com.ftdd2.ftdd215.properties.AliOssProperties;
-import com.ftdd2.ftdd215.utils.AliOssUtil;
+import com.ftdd2.properties.AliOssProperties;
+import com.ftdd2.utils.AliOssUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

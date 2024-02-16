@@ -1,10 +1,10 @@
-package com.ftdd2.ftdd215.controller;
+package com.ftdd2.controller;
 
 import cn.hutool.http.HttpRequest;
 import cn.hutool.json.JSONUtil;
 
-import com.ftdd2.ftdd215.domain.ChatRequest;
-import com.ftdd2.ftdd215.domain.ChatResponse;
+import com.ftdd2.domain.ChatRequest;
+import com.ftdd2.domain.ChatResponse;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 

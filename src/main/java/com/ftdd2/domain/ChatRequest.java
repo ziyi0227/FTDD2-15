@@ -1,4 +1,4 @@
-package com.ftdd2.ftdd215.domain;
+package com.ftdd2.domain;
 
 //这个是用来处理请求的
 import lombok.AllArgsConstructor;

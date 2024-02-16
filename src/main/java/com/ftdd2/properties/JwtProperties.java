@@ -1,11 +1,11 @@
-package com.ftdd2.ftdd215.properties;
+package com.ftdd2.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties(prefix = "sky.jwt")
+@ConfigurationProperties(prefix = "ftdd2.jwt")
 @Data
 public class JwtProperties {
 

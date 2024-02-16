@@ -1,4 +1,4 @@
-package com.ftdd2.ftdd215.utils;
+package com.ftdd2.utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;

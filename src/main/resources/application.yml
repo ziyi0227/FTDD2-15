@@ -36,7 +36,7 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: true
 
-sky:
+ftdd2:
   jwt:
         # 设置jwt签名加密时使用的秘钥
       admin-secret-key: moying

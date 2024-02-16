@@ -1,4 +1,4 @@
-package com.ftdd2.ftdd215.utils;
+package com.ftdd2.utils;
 
 import com.aliyun.oss.ClientException;
 import com.aliyun.oss.OSS;
