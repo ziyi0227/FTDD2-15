@@ -19,6 +19,12 @@ spring:
     authentication:
       username: neo4j
       password: 12345678
+  rabbitmq:
+    host: localhost
+    port: 5672
+    virtual-host: /ftdd2
+    username: ftdd2
+    password: ftdd2
 
 logging:
   level:
