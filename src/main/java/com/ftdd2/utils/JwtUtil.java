@@ -1,13 +1,19 @@
 package com.ftdd2.utils;
 
+import com.alibaba.fastjson2.JSON;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Date;
 import java.util.Map;
+
+import static com.alibaba.fastjson2.JSON.parseObject;
 
 public class JwtUtil {
     /**
@@ -54,6 +60,14 @@ public class JwtUtil {
                 // 设置需要解析的jwt
                 .parseClaimsJws(token).getBody();
         return claims;
+    }
+
+    public static <T> T parseJWT(String secretKey, Class<T> clazz){
+        Claims body = Jwts.parser()
+                .setSigningKey(secretKey.getBytes(StandardCharsets.UTF_8))
+                .parseClaimsJws(secretKey)
+                .getBody();
+        return JSON.parseObject(body.getSubject(),clazz);
     }
 
 }
