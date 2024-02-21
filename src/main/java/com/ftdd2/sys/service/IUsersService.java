@@ -3,6 +3,8 @@ package com.ftdd2.sys.service;
 import com.ftdd2.sys.entity.Users;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.Map;
+
 /**
  * <p>
  * 用户表 服务类
@@ -13,4 +15,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IUsersService extends IService<Users> {
 
+    Map<String, Object> login(Users user);
 }

@@ -4,7 +4,7 @@ create table users
     id         int AUTO_INCREMENT,
     name       varchar(32)        not null,
     username   varchar(20) unique not null,
-    password   varchar(20)        not null,
+    password   varchar(300)        not null,
     sex        varchar(2) default '未知'
         checK (sex in ('男', '女', '未知')),
     address    varchar(64)        not null,
