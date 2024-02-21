@@ -6,6 +6,7 @@ import com.ftdd2.sys.mapper.UsersMapper;
 import com.ftdd2.sys.service.IUsersService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ftdd2.utils.JwtUtil;
+import com.ftdd2.utils.Md5Util;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -54,5 +55,16 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
         }
         return users;
 
+    }
+    public Users findByUsername(String username){
+        Users user=usersMapper.getByUsername(username);
+        return user;
+    }
+
+    @Override
+    public void register(String username, String password) {
+        //加密
+        String md5String = Md5Util.getMD5String(password);
+        usersMapper.add(username,md5String);
     }
 }

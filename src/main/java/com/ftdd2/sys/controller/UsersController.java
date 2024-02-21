@@ -7,6 +7,8 @@ import com.ftdd2.utils.JwtUtil;
 import com.ftdd2.utils.Md5Util;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import jakarta.validation.constraints.Pattern;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -58,5 +60,18 @@ public class UsersController {
         operations.set(token,token,1, TimeUnit.HOURS);//JWT存入redis，1小时后在内存中销毁
 
         return Result.success(token);
+    }
+
+    @ApiOperation("用户注册")
+    @PostMapping("/register")
+    public Result  register(@Pattern(regexp = "^\\S{1,20}$") String username,
+                            @Pattern(regexp = "^\\S{1,20}$") String password){
+        Users user = usersService.findByUsername(username);
+        if(user==null){
+            usersService.register(username,password);
+            return Result.success();
+        }else{
+            return Result.fail("用户名已经被占用");
+        }
     }
 }
