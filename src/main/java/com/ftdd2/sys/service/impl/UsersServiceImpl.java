@@ -6,10 +6,13 @@ import com.ftdd2.sys.mapper.UsersMapper;
 import com.ftdd2.sys.service.IUsersService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ftdd2.utils.JwtUtil;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
+import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
+
+import javax.security.auth.login.AccountException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,35 +27,32 @@ import java.util.Map;
 @Service
 public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements IUsersService {
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+
 
     @Autowired
-    private JwtUtil jwtUtil;
+    private UsersMapper usersMapper;
 
     @Override
-    public Map<String, Object> login(Users user) {
-        //根据用户名查询
-        LambdaQueryWrapper<Users> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Users::getUsername,user.getUsername());
-        Users loginUser = this.baseMapper.selectOne(wrapper);
-        //查询结果不为空，并且密码与传入密码匹配，输出token,并将token存入redis
-        if (loginUser != null && passwordEncoder.matches(user.getPassword(),loginUser.getPassword())){
-            //暂时用UUID，后期改为JWT
-            // String key = "user" + UUID.randomUUID();
+    public Users login(Users user) {
+        //获取用户名密码
+        String username = user.getUsername();
+        String password = user.getPassword();
 
-            //存入redis
-            loginUser.setPassword(null);
-            // redisTemplate.opsForValue().set(key,loginUser,30, TimeUnit.MINUTES);
 
-            //创建jwt
-            String token = jwtUtil.createToken(loginUser);
-
-            //返回token
-            Map<String,Object> data = new HashMap<>();
-            data.put("token",token);
-            return data;
+        Users users = usersMapper.getByUsername(username);
+        if(users == null){
+            //用户名不存在
+            return null;
         }
-        return null;
+        // TODO 密码比对
+
+        password = DigestUtils.md5DigestAsHex(password.getBytes());
+
+        //校验密码
+        if(!password.equals(users.getPassword())){
+            return null;
+        }
+        return users;
+
     }
 }

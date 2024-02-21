@@ -15,5 +15,5 @@ import java.util.Map;
  */
 public interface IUsersService extends IService<Users> {
 
-    Map<String, Object> login(Users user);
+    Users login(Users user);
 }
