@@ -7,6 +7,8 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 /**
  * <p>
@@ -18,6 +20,8 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @TableName("job_table")
 @ApiModel(value = "JobTable对象", description = "招聘信息表")
+@AllArgsConstructor
+@NoArgsConstructor
 public class JobTable implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -32,6 +36,7 @@ public class JobTable implements Serializable {
     private String description;
 
     private String title;
+    private Integer titleId;
 
     @ApiModelProperty("发布者id")
     private Integer hrId;
@@ -114,18 +119,5 @@ public class JobTable implements Serializable {
         this.salaryId = salaryId;
     }
 
-    @Override
-    public String toString() {
-        return "JobTable{" +
-            "id = " + id +
-            ", company = " + company +
-            ", salary = " + salary +
-            ", description = " + description +
-            ", title = " + title +
-            ", hrId = " + hrId +
-            ", createTime = " + createTime +
-            ", updateTime = " + updateTime +
-            ", salaryId = " + salaryId +
-        "}";
-    }
+
 }

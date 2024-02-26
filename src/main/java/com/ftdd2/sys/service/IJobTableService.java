@@ -1,5 +1,7 @@
 package com.ftdd2.sys.service;
 
+import com.ftdd2.common.vo.PageResult;
+import com.ftdd2.sys.Pojo.JobTableQuery;
 import com.ftdd2.sys.entity.JobTable;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,4 +15,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IJobTableService extends IService<JobTable> {
 
+    void add(JobTable jobTable);
+
+    PageResult pageQuery(JobTableQuery jobTableQuery);
 }

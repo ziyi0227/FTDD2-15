@@ -26,7 +26,7 @@ create table company
     primary key (id)
 ) engine=Innodb AUTO_INCREMENT=2000000 comment '企业表';
 
-
+--  --此处再执行
 drop table if exists Job_table;
 create table Job_table
 (
@@ -34,6 +34,7 @@ create table Job_table
     company     varchar(64) not null,
     salary      varchar(32) not null,
     description LONGTEXT    not null,
+    title_id     int not null,
     title       varchar(32) not null,
     hr_id       int comment '发布者id' not null,
     create_time date,
@@ -41,7 +42,7 @@ create table Job_table
     salary_id   int,
     primary Key (id)
 )engine=Innodb AUTO_INCREMENT=3000000,comment '招聘信息表';
-
+--  --
 
 drop table if exists Resume;
 create table Resume
@@ -90,7 +91,7 @@ create table address_table
     addr_id int PRIMARY Key
 );
 
---
+-- 此处再执行
 drop table if exists job_category;
 create table job_category
 (
