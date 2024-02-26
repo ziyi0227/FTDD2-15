@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.Map;
 
@@ -28,4 +29,11 @@ public interface UsersMapper extends BaseMapper<Users> {
     @Insert("INSERT INTO users (username,password,login_time) " +
             "values (#{username},#{md5String},now())")
     void add(String username, String md5String);
+
+    @Update("update users set password=#{md5String} where id=#{id}")
+    void updatePwd(String md5String, Integer id);
+
+    @Update("update users set name=#{name},sex=#{sex},address=#{address}" +
+            ",education=#{education},phone=#{phone}")
+    void update(Users user);
 }

@@ -2,6 +2,8 @@ package com.ftdd2.sys.mapper;
 
 import com.ftdd2.sys.entity.JobTable;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * <p>
@@ -11,6 +13,10 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author ftdd2
  * @since 2024-02-16
  */
-public interface JobTableMapper extends BaseMapper<JobTable> {
+@Mapper
+public interface
+JobTableMapper extends BaseMapper<JobTable> {
 
+@Select("select count(id) from ft_demo.job_table where salary_id=#{Tid}")
+    Integer countCategory(Long Tid);
 }

@@ -1,7 +1,11 @@
 package com.ftdd2.sys.service;
 
+import com.ftdd2.common.vo.PageResult;
+import com.ftdd2.sys.Pojo.JobCategoryQuery;
 import com.ftdd2.sys.entity.JobCategory;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +17,12 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IJobCategoryService extends IService<JobCategory> {
 
+
+    List<JobCategory> list(String title);
+
+
+    void add(JobCategory jobCategory);
+
+
+    void deleteById(Long id);
 }

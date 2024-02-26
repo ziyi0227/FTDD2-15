@@ -7,6 +7,7 @@ import com.ftdd2.sys.service.IUsersService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ftdd2.utils.JwtUtil;
 import com.ftdd2.utils.Md5Util;
+import com.ftdd2.utils.ThreadLocalUtil;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -66,5 +67,17 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
         //加密
         String md5String = Md5Util.getMD5String(password);
         usersMapper.add(username,md5String);
+    }
+
+    @Override
+    public void updatePwd(String newPwd) {
+        Map<String,Object>map= ThreadLocalUtil.get();
+        Integer id=(Integer) map.get("id");
+        usersMapper.updatePwd(Md5Util.getMD5String(newPwd),id);
+    }
+
+    @Override
+    public void update(Users user) {
+        usersMapper.update(user);
     }
 }

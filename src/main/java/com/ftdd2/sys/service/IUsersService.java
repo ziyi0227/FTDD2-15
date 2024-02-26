@@ -19,4 +19,8 @@ public interface IUsersService extends IService<Users> {
      Users findByUsername(String username);
 
     void register(String username, String password);
+
+    void updatePwd(String newPwd);
+
+    void update(Users user);
 }

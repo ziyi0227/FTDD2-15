@@ -90,13 +90,15 @@ create table address_table
     addr_id int PRIMARY Key
 );
 
+--
 drop table if exists job_category;
 create table job_category
 (
     title varchar(32) not null,
-    Tid   int PRIMARY KEY
-);
+    Tid   int  auto_increment PRIMARY KEY
+)auto_increment=1;
 
+--
 drop table if exists salary_table;
 create table salary_table
 (
