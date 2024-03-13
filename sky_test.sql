@@ -151,9 +151,16 @@ CREATE TABLE role_menu
     role_id int  DEFAULT NULL,
     menu_id int  DEFAULT NULL,
     PRIMARY KEY (id)
-) ENGINE=InnoDB AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB AUTO_INCREMENT=5;
 
-
+create table action_table
+(
+    user_id int not null,
+    job_id int not null ,
+    browsed varchar(1) default ('0') check ( browsed in('1','0') ),
+    delivered varchar(1) default ('0') check ( delivered in('1','0') ),
+    satisfied varchar(1) default ('0') check ( satisfied in('1','0') )
+)
 
 
 

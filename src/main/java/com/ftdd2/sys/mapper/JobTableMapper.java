@@ -3,7 +3,7 @@ package com.ftdd2.sys.mapper;
 import com.ftdd2.sys.Pojo.JobTableQuery;
 import com.ftdd2.sys.entity.JobTable;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.github.pagehelper.Page;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -24,5 +24,5 @@ JobTableMapper extends BaseMapper<JobTable> {
 
 
 
-    Page<JobTable> pageQuery(JobTableQuery jobTableQuery);
+//    Page<JobTable> pageQuery(JobTableQuery jobTableQuery);
 }

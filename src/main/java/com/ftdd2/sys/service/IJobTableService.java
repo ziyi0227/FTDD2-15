@@ -17,5 +17,5 @@ public interface IJobTableService extends IService<JobTable> {
 
     void add(JobTable jobTable);
 
-    PageResult pageQuery(JobTableQuery jobTableQuery);
+//    PageResult pageQuery(JobTableQuery jobTableQuery);
 }
