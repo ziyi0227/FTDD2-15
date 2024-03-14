@@ -1,67 +1,94 @@
 drop table if exists users;
 create table users
 (
-    id         int AUTO_INCREMENT,
+    id         varchar(52),
     name       varchar(32)        not null,
     username   varchar(20) unique not null,
     password   varchar(300)        not null,
-    sex        varchar(2) default '未知'
-        checK (sex in ('男', '女', '未知')),
-    address    varchar(64)        not null,
-    education  varchar(32)        not null,
-    phone      varchar (11)        not null,
-    login_time date,
+    sex        tinyint default 3
+        checK (sex in (1, 2, 3)) comment ' 1男 2女 3隐私',
+    live_city    varchar(64)        not null,
+   login_time date,
+   type tinyint default 1 check (type in (1, 2,3)) comment '1用户 2企业 3管理',
     primary Key (id)
-)engine=Innodb AUTO_INCREMENT=1000000,comment '用户表';
+)engine=Innodb ,comment '用户表';
 
-create table company
-(
-    id         int AUTO_INCREMENT,
-    name       varchar(32)        not null,
-    username   varchar(20) unique not null,
-    password   varchar(20)        not null,
-    sex        varchar(2) default '未知' check (sex in ('男', '女', '未知')),
-    phone      varchar(11)        not null,
-    login_time date,
-    primary key (id)
-) engine=Innodb AUTO_INCREMENT=2000000 comment '企业表';
+-- create table company
+-- (
+--     id         int AUTO_INCREMENT,
+--     name       varchar(32)        not null,
+--     username   varchar(20) unique not null,
+--     password   varchar(20)        not null,
+--     sex        varchar(2) default '未知' check (sex in ('男', '女', '未知')),
+--     phone      varchar(11)        not null,
+--     login_time date,
+--     primary key (id)
+-- ) engine=Innodb AUTO_INCREMENT=2000000 comment '企业表';
 
---  --此处再执行
+
 drop table if exists Job_table;
 create table Job_table
 (
     id          int AUTO_INCREMENT,
-    company     varchar(64) not null,
-    salary      varchar(32) not null,
-    description LONGTEXT    not null,
-    title_id     int not null,
-    title       varchar(32) not null,
-    hr_id       int comment '发布者id' not null,
-    create_time date,
-    update_time date,
-    salary_id   int,
+    jd_no varchar(52) not null  comment '职位代码',
+    jd_title varchar(52) not null  comment '职位名称',
+    company     varchar(64) comment '公司名称',
+    city varchar(32) comment '工作城市',
+    jd_sub_type varchar(32) comment '职位类型',
+    require_numss bigint comment '招聘人数',
+    min_salary  int comment '最低薪资',
+    max_salary  int comment '最高薪资',
+    start_date  date comment '开始时间',
+    end_date    date comment '结束时间',
+    is_travel  tinyint default 0 check (is_travel in (0, 1)) comment '是否出差,0不出差，1出差',
+    min_years   varchar(10) comment '最低工作年限',
+    min_education varchar(32) comment '最低学历',
+    title_skill varchar(32) comment '技能要求',
+    knowledge varchar(32) comment '知识要求',
+    quality varchar(32) comment '素质要求',
     primary Key (id)
-)engine=Innodb AUTO_INCREMENT=3000000,comment '招聘信息表';
+)engine=Innodb comment '招聘信息表';
 --  --
+
+
+create table action_table
+(
+    user_id int not null,
+    job_id int not null ,
+    browsed varchar(1) default ('0') check ( browsed in('1','0') ),
+    delivered varchar(1) default ('0') check ( delivered in('1','0') ),
+    satisfied varchar(1) default ('0') check ( satisfied in('1','0') )
+);
+
+
 
 drop table if exists Resume;
 create table Resume
 (
-    id          int AUTO_INCREMENT,
-    Uid         int          not null,
-    name        varchar(20)  not null,
-    address     varchar(32) null,
-    education   varchar(32)  not null,
-    ex_title    varchar(32)  not null,
-    ex_salary   varchar(32) null,
-    description longtext     not null,
-    photo       varchar(255) not null,
-    status      int default '0'
-        check (status in (0, 1)) comment '1发布，0草稿',
-    Did         int null comment '选择模板id',
-    primary Key (id)
-) engine=Innodb AUTO_INCREMENT=4000000,comment '简历表';
+    id          int ,
+    user_id     int not null,
+    name        varchar(32) not null,
+    phone       varchar(11) not null,
+    age         varchar(3) not null,
+    live_city   varchar(32) not null,
+    degree      varchar(32) not null,
+    desire_jd_type varchar(32) not null,
+    desire_jd_salary_id varchar(32) not null,
+    desire_jd_industry varchar(32) not null,
+    desire_city varchar(32) not null,
+    experience  varchar(1000) not null,
+    start_work_date Year not null,
+    current_salary_id varchar(32) not null,
+    cur_industry varchar(32) not null,
+    cur_jd_type varchar(32) not null
+   
+) engine=Innodb comment '简历表';
 
+create table user_exposure
+(
+    user_id varchar(52) not null,
+    jd_no   varchar(52) not null
+);
 
 drop table if exists Admin;
 create table Admin
@@ -78,46 +105,55 @@ values ('1', 'admin', 'admin');
 drop table if exists Favor;
 create table Favor
 (
-    Uid    int not null,
-    Tid    int not null,
-    orders int primary Key
-);
+   user_id varchar (52) not null,
+   jd_no varchar(52) not null,
+   id int primary Key
+)comment '收藏表';
 
 
-drop table if exists address_table;
-create table address_table
-(
-    address varchar(32) not null,
-    addr_id int PRIMARY Key
-);
+-- drop table if exists address_table;
+-- create table address_table
+-- (
+--     address varchar(32) not null,
+--     addr_id int PRIMARY Key
+-- );
 
 -- 此处再执行
-drop table if exists job_category;
-create table job_category
-(
-    title varchar(32) not null,
-    Tid   int  auto_increment PRIMARY KEY
-)auto_increment=1;
+# drop table if exists job_category;
+# create table job_category
+# (
+#     title varchar(32) not null,
+#     Tid   int  auto_increment PRIMARY KEY
+# )auto_increment=1;
 
 --
 drop table if exists salary_table;
 create table salary_table
 (
     category  varchar(20) not null,
-    salary_id int PRIMARY Key
+    salary_id varchar(20) not null
 );
 insert
 salary_table (category,salary_id)
 VALUES
-('不限','1'),
-('2K以下','2'),
-('2K-5','3'),
-('5K-10K','4'),
-('10K-15K','5'),
-('15K-25K','6'),
-('25K-50K','7'),
-('50K以上','8'),
-('面议','9');
+    ('0000000000','面议'),
+    ('0000001000','1000元以下'),
+    ('0100002000','1000-2000元/月'),
+    ('0200104000','2001-4000元/月'),
+    ('0400106000','4001-6000元/月'),
+    ('0600108000','6001-8000元/月'),
+    ('0800110000','8001-10000元/月'),
+    ('100001150000','100000元以上'),
+    ('1000115000','10001-15000元/月'),
+    ('1500120000','15000-20000元/月'),
+    ('1500125000','15000-25000元/月'),
+    ('2000130000','20000-30000元/月'),
+    ('2500199999','25000元/月以上'),
+    ('3000150000','30000-50000元/月'),
+    ('3500150000','35000-50000元/月'),
+    ('5000170000','50000-70000元/月'),
+    ('70001100000','70000-100000元/月'),
+    ('2500135000','25000-35000元/月');
 
 CREATE TABLE menu_table
 (
@@ -139,8 +175,8 @@ CREATE TABLE menu_table
 CREATE TABLE user_role
 (
     id      int NOT NULL AUTO_INCREMENT,
-    user_id int  DEFAULT NULL,
-    role_id int  DEFAULT NULL,
+    user_id varchar(52) DEFAULT NULL,
+    role_id int DEFAULT NULL,
     PRIMARY KEY (id)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 ;
 
@@ -153,14 +189,14 @@ CREATE TABLE role_menu
     PRIMARY KEY (id)
 ) ENGINE=InnoDB AUTO_INCREMENT=5;
 
-create table action_table
-(
-    user_id int not null,
-    job_id int not null ,
-    browsed varchar(1) default ('0') check ( browsed in('1','0') ),
-    delivered varchar(1) default ('0') check ( delivered in('1','0') ),
-    satisfied varchar(1) default ('0') check ( satisfied in('1','0') )
-)
+-- create table action_table
+-- (
+--     user_id int not null,
+--     job_id int not null ,
+--     browsed varchar(1) default ('0') check ( browsed in('1','0') ),
+--     delivered varchar(1) default ('0') check ( delivered in('1','0') ),
+--     satisfied varchar(1) default ('0') check ( satisfied in('1','0') )
+-- )
 
 
 

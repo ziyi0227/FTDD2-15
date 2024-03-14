@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement //开启注解方式的事务管理
 @Slf4j
 @SpringBootApplication
-@MapperScan("com.ftdd2.*.mapper")
+@MapperScan("com.ftdd2.mapper")
 public class Ftdd215Application {
 
     public static void main(String[] args) {
