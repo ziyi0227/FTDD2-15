@@ -1,7 +1,7 @@
 package com.ftdd2.ftdd215;
 
 import com.ftdd2.properties.JwtProperties;
-import com.ftdd2.sys.entity.Users;
+
 import com.ftdd2.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
 import org.junit.jupiter.api.Test;
