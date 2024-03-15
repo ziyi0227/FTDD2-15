@@ -7,13 +7,12 @@ admin:
 spring:
   datasource:
     username: root
-    password: 123456
+    password: root
     url: jdbc:mysql:///ft_demo
   data:
     redis:
       host: localhost
       port: 6379
-      password: wxywxy
   neo4j:
     uri: bolt://localhost:7687
     authentication:
