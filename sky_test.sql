@@ -50,7 +50,7 @@ create table Job_table
 )engine=Innodb comment '招聘信息表';
 --  --
 
-
+drop table if exists action_table;
 create table action_table
 (
     user_id int not null,
@@ -81,9 +81,10 @@ create table Resume
     current_salary_id varchar(32) not null,
     cur_industry varchar(32) not null,
     cur_jd_type varchar(32) not null
-   
+
 ) engine=Innodb comment '简历表';
 
+drop table if exists user_exposure;
 create table user_exposure
 (
     user_id varchar(52) not null,
@@ -119,12 +120,12 @@ create table Favor
 -- );
 
 -- 此处再执行
-# drop table if exists job_category;
-# create table job_category
-# (
-#     title varchar(32) not null,
-#     Tid   int  auto_increment PRIMARY KEY
-# )auto_increment=1;
+-- drop table if exists job_category;
+-- create table job_category
+-- (
+--     title varchar(32) not null,
+--     Tid   int  auto_increment PRIMARY KEY
+-- )auto_increment=1;
 
 --
 drop table if exists salary_table;
@@ -155,6 +156,7 @@ VALUES
     ('70001100000','70000-100000元/月'),
     ('2500135000','25000-35000元/月');
 
+drop table if exists menu_table;
 CREATE TABLE menu_table
 (
     menu_id   int  NOT NULL AUTO_INCREMENT,
@@ -171,7 +173,7 @@ CREATE TABLE menu_table
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
 
-
+drop table if exists user_role;
 CREATE TABLE user_role
 (
     id      int NOT NULL AUTO_INCREMENT,
@@ -180,7 +182,7 @@ CREATE TABLE user_role
     PRIMARY KEY (id)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 ;
 
-
+drop table if exists role_menu;
 CREATE TABLE role_menu
 (
     id      int  NOT NULL AUTO_INCREMENT,
