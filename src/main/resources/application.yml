@@ -1,9 +1,6 @@
 server:
   port: 6666
 
-admin:
-  username: ftdd2
-  password: 123456
 spring:
   datasource:
     username: root
