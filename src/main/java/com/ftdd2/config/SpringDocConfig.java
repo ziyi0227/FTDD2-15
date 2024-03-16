@@ -11,18 +11,18 @@ import org.springframework.context.annotation.Configuration;
  *
  * @author Canva
  */
-@Configuration
-public class SpringDocConfig {
-    @Bean
-    public OpenAPI apiInfo() {
-        return new OpenAPI().info(new Info().title("后端接口文档").version("1.0.0"));
-    }
-
-    @Bean
-    public GroupedOpenApi httpApi() {
-        return GroupedOpenApi.builder()
-                .group("http")
-                .pathsToMatch("/**")
-                .build();
-    }
-}
+//@Configuration
+//public class SpringDocConfig {
+//    @Bean
+//    public OpenAPI apiInfo() {
+//        return new OpenAPI().info(new Info().title("后端接口文档").version("1.0.0"));
+//    }
+//
+//    @Bean
+//    public GroupedOpenApi httpApi() {
+//        return GroupedOpenApi.builder()
+//                .group("http")
+//                .pathsToMatch("/**")
+//                .build();
+//    }
+//}
