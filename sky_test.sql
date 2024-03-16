@@ -2,12 +2,12 @@ drop table if exists users;
 create table users
 (
     id         varchar(52),
-    name       varchar(32)        not null,
+    name       varchar(32),
     username   varchar(20) unique not null,
     password   varchar(300)        not null,
     sex        tinyint default 3
         checK (sex in (1, 2, 3)) comment ' 1男 2女 3隐私',
-    live_city    varchar(64)        not null,
+    live_city    varchar(64),
    login_time date,
    type tinyint default 1 check (type in (1, 2,3)) comment '1用户 2企业 3管理',
     primary Key (id)
@@ -90,16 +90,16 @@ create table user_exposure
     jd_no   varchar(52) not null
 );
 
-drop table if exists Admin;
-create table Admin
-(
-    Aid      int primary Key,
-    username varchar(32),
-    password varchar(32)
-);
+-- drop table if exists Admin;
+-- create table Admin
+-- (
+--    Aid      int primary Key,
+--    username varchar(32),
+--    password varchar(32)
+-- );
 
-insert into Admin (Aid, username, password)
-values ('1', 'admin', 'admin');
+-- insert into Admin (Aid, username, password)
+-- values ('1', 'admin', 'admin');
 
 
 drop table if exists Favor;

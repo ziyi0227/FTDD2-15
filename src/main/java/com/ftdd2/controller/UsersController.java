@@ -2,20 +2,16 @@ package com.ftdd2.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ftdd2.common.vo.Result;
 import com.ftdd2.domain.DTO.JobQueryDTO;
 import com.ftdd2.domain.DTO.UserDTO;
-import com.ftdd2.domain.entity.Favor;
 import com.ftdd2.domain.entity.JobTable;
 import com.ftdd2.domain.entity.User;
 
 import com.ftdd2.service.IFavorService;
 import com.ftdd2.service.IJobTableService;
 import com.ftdd2.service.IUsersService;
-
-import com.ftdd2.utils.ThreadLocalUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +43,11 @@ public class UsersController {
     @Autowired
     private IFavorService favorService;
 
+    /**
+     *
+     * @param user
+     * @return
+     */
     @ApiOperation("登录接口")
     @PostMapping("/login")
     public Result<?> login(@RequestBody User user) {
@@ -57,6 +58,11 @@ public class UsersController {
         return Result.fail(20002, "用户名或密码错误");
     }
 
+    /**
+     *
+     * @param userDTO
+     * @return
+     */
     @ApiOperation("注册接口")
     @PostMapping("/register")
     public Result<?> register(@RequestBody UserDTO userDTO) {
@@ -67,7 +73,11 @@ public class UsersController {
         return Result.fail(20001, "注册失败");
     }
 
-
+    /**
+     *
+     * @param jobQueryDTO
+     * @return
+     */
     @ApiOperation("分页查询接口")
     @GetMapping("/job/list")
     public Result<?> getJobListPage(@RequestBody JobQueryDTO jobQueryDTO) {
@@ -87,6 +97,12 @@ public class UsersController {
         return Result.success(data);
     }
 
+    /**
+     *
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
     @ApiOperation("收藏列表查询")
     @GetMapping("/favor")
     public Result<?> getFavorPage(@RequestParam int pageNo,
@@ -94,6 +110,12 @@ public class UsersController {
         Map<String,Object>data=usersService.getFavorList(pageNo,pageSize);
         return Result.success(data);
     }
+
+    /**
+     *
+     * @param jdNo
+     * @return
+     */
     @ApiOperation("用户操作（收藏）")
     @PutMapping("/favor/{jdNo}")
     public Result<?>setFavor(@PathVariable String jdNo){
