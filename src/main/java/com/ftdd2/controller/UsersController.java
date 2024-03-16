@@ -14,6 +14,7 @@ import com.ftdd2.service.IJobTableService;
 import com.ftdd2.service.IUsersService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.ibatis.io.ResolverUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
@@ -68,6 +69,22 @@ public class UsersController {
             return Result.success("注册成功");
         }
         return Result.fail(20001, "注册失败");
+    }
+
+    @GetMapping("/info")
+    public Result<?>getUserInfo(@RequestParam("token") String token)
+    {
+        Map<String,Object>data=usersService.getUserInfo(token);
+        if(data!=null){
+            return Result.success(data);
+        }
+        return Result.fail(20003,"登录信息无效，重新登录");
+    }
+
+    @PostMapping("/logout")
+    public Result<?>logout(@RequestHeader("token")String token){
+        usersService.logout(token);
+        return Result.success();
     }
 
     /**

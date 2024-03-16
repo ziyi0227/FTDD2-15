@@ -106,5 +106,33 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, User> implements 
         return data;
     }
 
+    @Override
+    public Map<String, Object> getUserInfo(String token) {
+        String obj = (String) redisTemplate.opsForValue().get(token);
+        if (obj != null) {
+            Map<String, Object> claims = JwtUtil.parseToken(token);
+            String username = (String) claims.get("username");
+            String id = (String) claims.get("id");
+            User user = userMapper.selectById(id);
+
+
+            Map<String, Object> data = new HashMap<>();
+            data.put("name", username);
+            data.put("sex", user.getSex());
+
+
+//            List<String> roleList = this.baseMapper.getRoleNameByUserId(id);
+            //角色
+//            data.put("roles", roleList);
+            return data;
+        }
+        return null;
+    }
+
+    @Override
+    public void logout(String token) {
+        redisTemplate.delete(token);
+    }
+
 
 }

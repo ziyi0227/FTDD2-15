@@ -24,4 +24,8 @@ public interface IUsersService extends IService<User> {
 
 
     Map<String, Object> getFavorList(int pageNo, int pageSize);
+
+    Map<String, Object> getUserInfo(String token);
+
+    void logout(String token);
 }
