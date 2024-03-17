@@ -9,10 +9,12 @@ create table users
         checK (sex in (1, 2, 3)) comment ' 1男 2女 3隐私',
     live_city    varchar(64),
    login_time date,
+
    type tinyint default 1 check (type in (1, 2,3)) comment '1用户 2企业 3管理',
     primary Key (id)
 )engine=Innodb ,comment '用户表';
 
+alter table users add column avatar varchar(512);
 -- create table company
 -- (
 --     id         int AUTO_INCREMENT,

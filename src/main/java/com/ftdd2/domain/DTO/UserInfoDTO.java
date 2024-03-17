@@ -10,4 +10,5 @@ public class UserInfoDTO {
     private String name;
     private String liveCity;
     private Integer sex;
+    private String avatar;
 }

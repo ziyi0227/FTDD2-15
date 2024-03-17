@@ -34,8 +34,8 @@ mybatis:
 
 ftdd2:
   alioss:
-      endpoint: ${sky.alioss.endpoint}
-      access-key-id: ${sky.alioss.access-key-id}
-      access-key-secret: ${sky.alioss.access-key-secret}
-      bucket-name: ${sky.alioss.bucket-name}
+    endpoint: oss-cn-hangzhou.aliyuncs.com
+    access-key-id: LTAI5tAXRFMD3u9Z1vEKd9KF
+    access-key-secret: mpOsSSkubmUpMVHNcvXD6FqHHqR5Q3
+    bucket-name: sky-take-out-runa
 
