@@ -21,8 +21,15 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.ibatis.io.ResolverUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.convert.PeriodUnit;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.http.HttpHeaders;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -93,14 +100,27 @@ public class UsersController {
     }
 
     @PostMapping("/uploadResume")
-    public Result<?> uploadResume(String File) throws Exception {
-//        String fname = "F:\\1365690_1550161297391_45CB5123792B25CBEEF6D52E5249D85F.png";  //替换为您的文件名
+    public Result<?> uploadResume(MultipartFile File) throws Exception {
         Resume resume = new Resume();
-        resume = XinUtils.parseResume(File);
+        MultiValueMap<String,Object>body=new LinkedMultiValueMap<>();
+        System.out.println(File.getOriginalFilename());
+        File file =convertMultiPartToFile(File);
+        try{
+            body.add("Resume",new FileSystemResource(file));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        String filePath = file.getAbsolutePath();
+        resume = XinUtils.parseResume(filePath);
         Map<String, Object> map = ThreadLocalUtil.get();
         String id = (String) map.get("id");
         resume.setUserId(id);
         return Result.success(resume);
+    }
+    private File convertMultiPartToFile(MultipartFile file) throws IOException {
+        File convFile =new File(System.getProperty("java.io.tmpdir")+"/"+file.getOriginalFilename());
+        file.transferTo(convFile);
+        return convFile;
     }
 
 }

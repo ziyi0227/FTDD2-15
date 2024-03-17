@@ -74,45 +74,6 @@ public class XinUtils{
 
     }
 
-//    public static Resume transform(JSONObject o){
-//        JSONObject object=o.getJSONObject("parsing_result");
-//        // 基础信息
-//
-//        Map<String, Object> map = new HashMap<>(object.getJSONObject("basic_info").toMap());
-//        //工作经验
-//        Map<String, Object> work_experience = new HashMap<>(object.getJSONObject("work_experience").toMap());
-//        //社会经验
-//        Map<String, Object> social_experience = new HashMap<>(object.getJSONObject("work_experience").toMap());
-//        //项目经验
-//        Map<String, Object> project_experience = new HashMap<>(object.getJSONObject("work_experience").toMap());
-//        //获奖情况
-//        Map<String, Object> others = new HashMap<>(object.getJSONObject("awards").toMap());
-//        List<String>total=new ArrayList<>();
-//        total.add((String) work_experience.get("description"));
-//        total.add((String)social_experience.get("description"));
-//        total.add((String) project_experience.get("description"));
-//        total.add((String)others.get("awards"));
-//        Resume resume=new Resume();
-//        resume = Resume.builder()
-//                .desireJdSalaryId((String) map.get("desired_salary"))
-//                .sex((String)map.get("gender"))
-//                .age((Integer) map.get("age"))
-//                .name((String)map.get("name"))
-//                .phone((String)map.get("phone_number"))
-//                .liveCity((String) map.get("current_location"))
-//                .degree((String)map.get("degree") )
-//                .desireJdType((String)map.get("desired_position"))
-//                .desireCity((String) map.get("expect_location"))
-//                .desireJdIndustry((String)map.get("desired_industry"))
-//                .desireJdSalaryId((String)map.get("desired_salary"))
-//                .experience(total.toString())
-//                .startWorkDate(Year.parse((CharSequence) map.get("work_start_year")))
-//                .currentSalaryId((String)map.get("current_salary"))
-//                .curJdType((String)map.get("current_position"))
-//                .curIndustry((String)map.get("industry"))
-//                .build();
-//        return resume;
-//    }
 public static Resume transform(JSONObject o) {
     JSONObject parsingResult = o.getJSONObject("parsing_result");
     JSONObject basicInfoJson = parsingResult.getJSONObject("basic_info");
@@ -185,3 +146,57 @@ public static Resume transform(JSONObject o) {
     return resume;
 }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//    public static Resume transform(JSONObject o){
+//        JSONObject object=o.getJSONObject("parsing_result");
+//        // 基础信息
+//
+//        Map<String, Object> map = new HashMap<>(object.getJSONObject("basic_info").toMap());
+//        //工作经验
+//        Map<String, Object> work_experience = new HashMap<>(object.getJSONObject("work_experience").toMap());
+//        //社会经验
+//        Map<String, Object> social_experience = new HashMap<>(object.getJSONObject("work_experience").toMap());
+//        //项目经验
+//        Map<String, Object> project_experience = new HashMap<>(object.getJSONObject("work_experience").toMap());
+//        //获奖情况
+//        Map<String, Object> others = new HashMap<>(object.getJSONObject("awards").toMap());
+//        List<String>total=new ArrayList<>();
+//        total.add((String) work_experience.get("description"));
+//        total.add((String)social_experience.get("description"));
+//        total.add((String) project_experience.get("description"));
+//        total.add((String)others.get("awards"));
+//        Resume resume=new Resume();
+//        resume = Resume.builder()
+//                .desireJdSalaryId((String) map.get("desired_salary"))
+//                .sex((String)map.get("gender"))
+//                .age((Integer) map.get("age"))
+//                .name((String)map.get("name"))
+//                .phone((String)map.get("phone_number"))
+//                .liveCity((String) map.get("current_location"))
+//                .degree((String)map.get("degree") )
+//                .desireJdType((String)map.get("desired_position"))
+//                .desireCity((String) map.get("expect_location"))
+//                .desireJdIndustry((String)map.get("desired_industry"))
+//                .desireJdSalaryId((String)map.get("desired_salary"))
+//                .experience(total.toString())
+//                .startWorkDate(Year.parse((CharSequence) map.get("work_start_year")))
+//                .currentSalaryId((String)map.get("current_salary"))
+//                .curJdType((String)map.get("current_position"))
+//                .curIndustry((String)map.get("industry"))
+//                .build();
+//        return resume;
+//    }
