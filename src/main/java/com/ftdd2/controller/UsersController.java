@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ftdd2.common.vo.Result;
 import com.ftdd2.domain.DTO.JobQueryDTO;
 import com.ftdd2.domain.DTO.UserDTO;
+import com.ftdd2.domain.DTO.UserInfoDTO;
 import com.ftdd2.domain.entity.JobTable;
 import com.ftdd2.domain.entity.User;
 
@@ -16,6 +17,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.ibatis.io.ResolverUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.convert.PeriodUnit;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -80,5 +82,12 @@ public class UsersController {
     public Result<?>logout(@RequestHeader("token")String token){
         usersService.logout(token);
         return Result.success();
+    }
+
+
+    @PutMapping("/updateInfo")
+    public Result<?>updateInfo(@RequestBody UserInfoDTO userInfoDTO ){
+        usersService.updateInfo(userInfoDTO);
+        return Result.success("编辑成功");
     }
 }

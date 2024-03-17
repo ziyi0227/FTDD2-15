@@ -1,6 +1,7 @@
 package com.ftdd2.service;
 
 import com.ftdd2.domain.DTO.UserDTO;
+import com.ftdd2.domain.DTO.UserInfoDTO;
 import com.ftdd2.domain.entity.JobTable;
 import com.ftdd2.domain.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -28,4 +29,6 @@ public interface IUsersService extends IService<User> {
     Map<String, Object> getUserInfo(String token);
 
     void logout(String token);
+
+    void updateInfo(UserInfoDTO userInfoDTO);
 }

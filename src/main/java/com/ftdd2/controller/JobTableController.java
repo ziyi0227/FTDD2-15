@@ -50,8 +50,8 @@ public class JobTableController {
         wrapper.like(JobTable::getJdTitle, jobQueryDTO.getJdTitle()) //标题
                 .like(JobTable::getCompany, jobQueryDTO.getCompany()) //公司名
                 .like(JobTable::getJdSubType, jobQueryDTO.getJdSubType()) //类型
-                .lt(JobTable::getMaxSalary, jobQueryDTO.getMaxSalary()) //小于最大值
-                .gt(JobTable::getMinSalary, jobQueryDTO.getMinSalary()); //大于最小薪资
+                .lt(jobQueryDTO.getMaxSalary()!=null,JobTable::getMaxSalary, jobQueryDTO.getMaxSalary()) //小于最大值
+                .gt(jobQueryDTO.getMinSalary()!=null,JobTable::getMinSalary, jobQueryDTO.getMinSalary()); //大于最小薪资
         Page<JobTable> page = new Page<>(jobQueryDTO.getPageNo(), jobQueryDTO.getPageSize());
 
         jobTableService.page(page, wrapper);

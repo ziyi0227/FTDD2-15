@@ -35,7 +35,7 @@ create table Job_table
     company     varchar(64) comment '公司名称',
     city varchar(32) comment '工作城市',
     jd_sub_type varchar(32) comment '职位类型',
-    require_numss bigint comment '招聘人数',
+    require_nums bigint comment '招聘人数',
     min_salary  int comment '最低薪资',
     max_salary  int comment '最高薪资',
     start_date  date comment '开始时间',
@@ -43,9 +43,9 @@ create table Job_table
     is_travel  tinyint default 0 check (is_travel in (0, 1)) comment '是否出差,0不出差，1出差',
     min_years   varchar(10) comment '最低工作年限',
     min_education varchar(32) comment '最低学历',
-    title_skill varchar(32) comment '技能要求',
-    knowledge varchar(32) comment '知识要求',
-    quality varchar(32) comment '素质要求',
+    title_skill varchar(128) comment '技能要求',
+    knowledge varchar(128) comment '知识要求',
+    quality varchar(128) comment '素质要求',
     primary Key (id)
 )engine=Innodb comment '招聘信息表';
 --  --

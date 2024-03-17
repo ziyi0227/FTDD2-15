@@ -2,6 +2,7 @@ package com.ftdd2.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ftdd2.domain.DTO.UserDTO;
+import com.ftdd2.domain.DTO.UserInfoDTO;
 import com.ftdd2.domain.entity.JobTable;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -132,6 +133,17 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, User> implements 
     @Override
     public void logout(String token) {
         redisTemplate.delete(token);
+    }
+
+    @Override
+    public void updateInfo(UserInfoDTO userInfoDTO) {
+        User user = new User();
+        Map<String,Object>map=ThreadLocalUtil.get();
+        String id = (String) map.get("id");
+        user.setId(id);
+        BeanUtils.copyProperties(userInfoDTO,user);
+        //mp中null字段不会进行更新
+        userMapper.updateById(user);
     }
 
 
