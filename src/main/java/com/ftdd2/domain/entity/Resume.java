@@ -5,8 +5,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import java.time.Year;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+
+import lombok.*;
 import lombok.experimental.Accessors;
 
 /**
@@ -21,6 +21,9 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("resume")
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Resume implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -28,7 +31,9 @@ public class Resume implements Serializable {
     @TableId(value = "id", type = IdType.ASSIGN_UUID)
     private Integer id;
 
-    private Integer userId;
+    private String userId;
+
+    private String sex;
 
     private String name;
 

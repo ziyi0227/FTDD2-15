@@ -68,7 +68,7 @@ drop table if exists Resume;
 create table Resume
 (
     id          int ,
-    user_id     int not null,
+    user_id     varchar(32) not null,
     name        varchar(32) not null,
     phone       varchar(11) not null,
     age         varchar(3) not null,

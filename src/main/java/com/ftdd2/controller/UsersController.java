@@ -8,17 +8,21 @@ import com.ftdd2.domain.DTO.JobQueryDTO;
 import com.ftdd2.domain.DTO.UserDTO;
 import com.ftdd2.domain.DTO.UserInfoDTO;
 import com.ftdd2.domain.entity.JobTable;
+import com.ftdd2.domain.entity.Resume;
 import com.ftdd2.domain.entity.User;
 
 import com.ftdd2.service.IFavorService;
 import com.ftdd2.service.IJobTableService;
 import com.ftdd2.service.IUsersService;
+import com.ftdd2.utils.ThreadLocalUtil;
+import com.ftdd2.utils.XinUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.ibatis.io.ResolverUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.convert.PeriodUnit;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,7 +43,6 @@ public class UsersController {
     private IUsersService usersService;
 
     /**
-     *
      * @param user
      * @return
      */
@@ -54,7 +57,6 @@ public class UsersController {
     }
 
     /**
-     *
      * @param userDTO
      * @return
      */
@@ -69,27 +71,36 @@ public class UsersController {
     }
 
     @GetMapping("/info")
-    public Result<?>getUserInfo(@RequestParam("token") String token)
-    {
-        Map<String,Object>data=usersService.getUserInfo(token);
-        if(data!=null){
+    public Result<?> getUserInfo(@RequestParam("token") String token) {
+        Map<String, Object> data = usersService.getUserInfo(token);
+        if (data != null) {
             return Result.success(data);
         }
-        return Result.fail(20003,"登录信息无效，重新登录");
+        return Result.fail(20003, "登录信息无效，重新登录");
     }
 
     @PostMapping("/logout")
-    public Result<?>logout(@RequestHeader("token")String token){
+    public Result<?> logout(@RequestHeader("token") String token) {
         usersService.logout(token);
         return Result.success();
     }
 
 
     @PutMapping("/updateInfo")
-    public Result<?>updateInfo(@RequestBody UserInfoDTO userInfoDTO ){
+    public Result<?> updateInfo(@RequestBody UserInfoDTO userInfoDTO) {
         usersService.updateInfo(userInfoDTO);
         return Result.success("编辑成功");
     }
 
+    @PostMapping("/uploadResume")
+    public Result<?> uploadResume(String File) throws Exception {
+//        String fname = "F:\\1365690_1550161297391_45CB5123792B25CBEEF6D52E5249D85F.png";  //替换为您的文件名
+        Resume resume = new Resume();
+        resume = XinUtils.parseResume(File);
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String id = (String) map.get("id");
+        resume.setUserId(id);
+        return Result.success(resume);
+    }
 
 }
