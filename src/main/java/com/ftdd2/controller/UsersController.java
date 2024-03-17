@@ -36,11 +36,6 @@ public class UsersController {
     @Autowired
     private IUsersService usersService;
 
-    @Autowired
-    private IJobTableService jobTableService;
-    @Autowired
-    private IFavorService favorService;
-
     /**
      *
      * @param user
@@ -85,59 +80,5 @@ public class UsersController {
     public Result<?>logout(@RequestHeader("token")String token){
         usersService.logout(token);
         return Result.success();
-    }
-
-    /**
-     *
-     * @param jobQueryDTO
-     * @return
-     */
-    @ApiOperation("分页查询接口")
-    @GetMapping("/job/list")
-    public Result<?> getJobListPage(@RequestBody JobQueryDTO jobQueryDTO) {
-        LambdaQueryWrapper<JobTable> wrapper = new LambdaQueryWrapper<>();
-        wrapper.like(JobTable::getJdTitle, jobQueryDTO.getJdTitle()) //标题
-                .like(JobTable::getCompany, jobQueryDTO.getCompany()) //公司名
-                .like(JobTable::getJdSubType, jobQueryDTO.getJdSubType()) //类型
-                .lt(JobTable::getMaxSalary, jobQueryDTO.getMaxSalary()) //小于最大值
-                .gt(JobTable::getMinSalary, jobQueryDTO.getMinSalary()); //大于最小薪资
-        Page<JobTable> page = new Page<>(jobQueryDTO.getPageNo(), jobQueryDTO.getPageSize());
-
-        jobTableService.page(page, wrapper);
-
-        Map<String, Object> data = new HashMap<>();
-        data.put("total", page.getTotal());
-        data.put("rows", page.getRecords());
-        return Result.success(data);
-    }
-
-    /**
-     *
-     * @param pageNo
-     * @param pageSize
-     * @return
-     */
-    @ApiOperation("收藏列表查询")
-    @GetMapping("/favor")
-    public Result<?> getFavorPage(@RequestParam int pageNo,
-                                  @RequestParam int pageSize) {
-        Map<String,Object>data=usersService.getFavorList(pageNo,pageSize);
-        return Result.success(data);
-    }
-
-    /**
-     *
-     * @param jdNo
-     * @return
-     */
-    @ApiOperation("用户操作（收藏）")
-    @PutMapping("/favor/{jdNo}")
-    public Result<?>setFavor(@PathVariable String jdNo){
-     int choice= favorService.setFavor(jdNo);
-     if(choice==0)
-     {
-         return Result.success("已删除该收藏");
-     }
-     return Result.success("收藏成功!");
     }
 }
