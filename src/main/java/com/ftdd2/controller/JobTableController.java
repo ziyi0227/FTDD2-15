@@ -61,5 +61,4 @@ public class JobTableController {
         data.put("rows", page.getRecords());
         return Result.success(data);
     }
-
 }

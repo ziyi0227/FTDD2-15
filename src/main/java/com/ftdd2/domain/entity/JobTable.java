@@ -56,7 +56,7 @@ public class JobTable implements Serializable {
     /**
      * 招聘人数
      */
-    private Long requireNumss;
+    private Long requireNums;
 
     /**
      * 最低薪资
