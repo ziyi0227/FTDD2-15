@@ -158,6 +158,21 @@ VALUES
     ('70001100000','70000-100000元/月'),
     ('2500135000','25000-35000元/月');
 
+
+
+-- 角色表
+create table role_table(
+    role_id int auto_increment primary key,
+    role_name varchar(32) default null,
+    role_desc varchar(100) default null
+)engine=Innodb comment '角色表';
+
+insert into role_table (role_id,role_name,role_desc)
+values (1,'普通用户','普通用户'),
+       (2,'企业用户','企业用户'),
+       (3,'管理员','管理员');
+
+
 drop table if exists menu_table;
 CREATE TABLE menu_table
 (
@@ -183,6 +198,8 @@ CREATE TABLE user_role
     role_id int DEFAULT NULL,
     PRIMARY KEY (id)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 ;
+
+
 
 drop table if exists role_menu;
 CREATE TABLE role_menu
