@@ -58,4 +58,10 @@ public class JobTableController {
         data.put("rows", page.getRecords());
         return Result.success(data);
     }
+
+    @DeleteMapping("/delete/{id}")
+    public Result<JobTable> deleteJobTable(@PathVariable("id") Integer id) {
+        jobTableService.removeById(id);
+        return Result.success("删除成功");
+    }
 }
