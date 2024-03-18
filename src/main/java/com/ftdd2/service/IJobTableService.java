@@ -14,4 +14,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface IJobTableService extends IService<JobTable> {
 
     void addJobTable(JobTable jobTable);
+
+    void updateJobTable(JobTable jobTable);
 }

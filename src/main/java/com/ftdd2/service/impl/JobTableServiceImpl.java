@@ -28,4 +28,9 @@ public class JobTableServiceImpl extends ServiceImpl<JobTableMapper, JobTable> i
     public void addJobTable(JobTable jobTable) {
         this.baseMapper.insert(jobTable);
     }
+
+    @Override
+    public void updateJobTable(JobTable jobTable) {
+        this.baseMapper.updateById(jobTable);
+    }
 }

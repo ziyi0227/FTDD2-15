@@ -64,4 +64,10 @@ public class JobTableController {
         jobTableService.removeById(id);
         return Result.success("删除成功");
     }
+
+    @PutMapping("/update")
+    public Result<JobTable> updateJobTable(@RequestBody JobTable jobTable) {
+        jobTableService.updateJobTable(jobTable);
+        return Result.success("更新成功");
+    }
 }
