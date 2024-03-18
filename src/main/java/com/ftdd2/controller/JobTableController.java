@@ -9,11 +9,7 @@ import com.ftdd2.domain.entity.JobTable;
 import com.ftdd2.service.IJobTableService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,8 +29,9 @@ public class JobTableController {
     @Autowired
     private IJobTableService jobTableService;
 
-    @GetMapping("/add")
-    public Result<Map<String, Object>> addJobTable() {
+    @PostMapping("/add")
+    public Result<Map<String, Object>> addJobTable(@RequestBody JobTable jobTable) {
+        jobTableService.addJobTable(jobTable);
         return Result.success("添加成功");
     }
 

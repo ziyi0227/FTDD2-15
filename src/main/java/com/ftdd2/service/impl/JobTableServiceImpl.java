@@ -24,5 +24,8 @@ import java.util.Map;
 public class JobTableServiceImpl extends ServiceImpl<JobTableMapper, JobTable> implements IJobTableService {
 
 
-
+    @Override
+    public void addJobTable(JobTable jobTable) {
+        this.baseMapper.insert(jobTable);
+    }
 }
