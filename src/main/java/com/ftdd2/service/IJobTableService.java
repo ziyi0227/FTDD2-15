@@ -13,7 +13,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IJobTableService extends IService<JobTable> {
 
-    void addJobTable(JobTable jobTable);
+    void addJobTable(JobTable jobTable, String token);
 
     void updateJobTable(JobTable jobTable);
 }

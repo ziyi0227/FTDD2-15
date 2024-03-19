@@ -30,8 +30,8 @@ public class JobTableController {
     private IJobTableService jobTableService;
 
     @PostMapping("/add")
-    public Result<Map<String, Object>> addJobTable(@RequestBody JobTable jobTable) {
-        jobTableService.addJobTable(jobTable);
+    public Result<Map<String, Object>> addJobTable(@RequestBody JobTable jobTable, @RequestHeader("token") String token) {
+        jobTableService.addJobTable(jobTable, token);
         return Result.success("添加成功");
     }
 
