@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -57,6 +58,16 @@ public class JobTableController {
         data.put("total", page.getTotal());
         data.put("rows", page.getRecords());
         return Result.success(data);
+    }
+
+    /**
+     * 根据用户，查询用户上传的jobList
+     * @return
+     */
+    @GetMapping("/all")
+    private Result<List<JobTable>> userJobAll(@RequestHeader("token") String token){
+        List<JobTable> jobList = jobTableService.listById(token);
+        return Result.success(jobList, "查询成功");
     }
 
     @DeleteMapping("/delete/{id}")

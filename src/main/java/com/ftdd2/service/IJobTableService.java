@@ -3,6 +3,8 @@ package com.ftdd2.service;
 import com.ftdd2.domain.entity.JobTable;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  * 招聘信息表 服务类
@@ -16,4 +18,6 @@ public interface IJobTableService extends IService<JobTable> {
     void addJobTable(JobTable jobTable, String token);
 
     void updateJobTable(JobTable jobTable);
+
+    List<JobTable> listById(String token);
 }
