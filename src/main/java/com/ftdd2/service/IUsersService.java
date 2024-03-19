@@ -31,4 +31,6 @@ public interface IUsersService extends IService<User> {
     void logout(String token);
 
     void updateInfo(UserInfoDTO userInfoDTO);
+
+    void updateAvatar(String filePath);
 }

@@ -120,6 +120,8 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, User> implements 
             Map<String, Object> data = new HashMap<>();
             data.put("name", username);
             data.put("sex", user.getSex());
+            data.put("live_city",user.getLiveCity());
+            data.put("avatar",user.getAvatar());
 
 
 //            List<String> roleList = this.baseMapper.getRoleNameByUserId(id);
@@ -143,6 +145,15 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, User> implements 
         user.setId(id);
         BeanUtils.copyProperties(userInfoDTO,user);
         //mp中null字段不会进行更新
+        userMapper.updateById(user);
+    }
+
+    @Override
+    public void updateAvatar(String filePath) {
+        Map<String,Object>map=ThreadLocalUtil.get();
+        String id = (String) map.get("id");
+        User user=userMapper.selectById(id);
+        user.setAvatar(filePath);
         userMapper.updateById(user);
     }
 

@@ -99,6 +99,17 @@ public class UsersController {
         return Result.success("编辑成功");
     }
 
+    @PostMapping("/upload/avatar")
+    public Result<?>uploadAvatar(MultipartFile image){
+        UploadController up=new UploadController();
+        Result<String> result = up.upload(image);
+        String filePath = result.getData();
+        usersService.updateAvatar(filePath);
+        return result;
+    }
+
+
+
     @PostMapping("/uploadResume")
     public Result<?> uploadResume(MultipartFile File) throws Exception {
         Resume resume = new Resume();
