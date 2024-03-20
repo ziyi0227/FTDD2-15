@@ -43,7 +43,7 @@ public class JobTableController {
      */
     @ApiOperation("分页查询接口")
     @GetMapping("/list")
-    public Result<?> getJobListPage(@RequestBody JobQueryDTO jobQueryDTO) {
+    public Result<?> getJobListPage(JobQueryDTO jobQueryDTO) {
         LambdaQueryWrapper<JobTable> wrapper = new LambdaQueryWrapper<>();
         wrapper.like(JobTable::getJdTitle, jobQueryDTO.getJdTitle()) //标题
                 .like(JobTable::getCompany, jobQueryDTO.getCompany()) //公司名
