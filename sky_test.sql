@@ -110,7 +110,7 @@ create table Favor
 (
    user_id varchar (52) not null,
    jd_no varchar(52) not null,
-   id int primary Key
+   id varchar(32) primary Key
 )comment '收藏表';
 
 

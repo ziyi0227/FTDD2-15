@@ -35,6 +35,7 @@ public class FavorServiceImpl extends ServiceImpl<FavorMapper, Favor> implements
             Favor newFavor=new Favor();
             newFavor.setJdNo(jdNo);
             newFavor.setUserId(id);
+
             this.baseMapper.insert(newFavor);
             return 1;
         }

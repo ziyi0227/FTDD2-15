@@ -85,6 +85,15 @@ public class UsersController {
         }
         return Result.fail(20003, "登录信息无效，重新登录");
     }
+    @GetMapping("/Info")
+    public Result<?> UserInfo() {
+        Map<String,Object> map = ThreadLocalUtil.get();
+
+        String id = (String) map.get("id");
+        User user=usersService.getById(id);
+        return Result.success(user);
+    }
+
 
     @PostMapping("/logout")
     public Result<?> logout(@RequestHeader("token") String token) {
