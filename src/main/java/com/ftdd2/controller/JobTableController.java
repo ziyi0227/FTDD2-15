@@ -37,7 +37,6 @@ public class JobTableController {
     }
 
     /**
-     *
      * @param jobQueryDTO
      * @return
      */
@@ -48,8 +47,8 @@ public class JobTableController {
         wrapper.like(JobTable::getJdTitle, jobQueryDTO.getJdTitle()) //标题
                 .like(JobTable::getCompany, jobQueryDTO.getCompany()) //公司名
                 .like(JobTable::getJdSubType, jobQueryDTO.getJdSubType()) //类型
-                .lt(jobQueryDTO.getMaxSalary()!=null,JobTable::getMaxSalary, jobQueryDTO.getMaxSalary()) //小于最大值
-                .gt(jobQueryDTO.getMinSalary()!=null,JobTable::getMinSalary, jobQueryDTO.getMinSalary()); //大于最小薪资
+                .lt(jobQueryDTO.getMaxSalary() != null, JobTable::getMaxSalary, jobQueryDTO.getMaxSalary()) //小于最大值
+                .gt(jobQueryDTO.getMinSalary() != null, JobTable::getMinSalary, jobQueryDTO.getMinSalary()); //大于最小薪资
         Page<JobTable> page = new Page<>(jobQueryDTO.getPageNo(), jobQueryDTO.getPageSize());
 
         jobTableService.page(page, wrapper);
@@ -62,10 +61,11 @@ public class JobTableController {
 
     /**
      * 根据用户，查询用户上传的jobList
+     *
      * @return
      */
     @GetMapping("/all")
-    private Result<List<JobTable>> userJobAll(@RequestHeader("token") String token){
+    private Result<List<JobTable>> userJobAll(@RequestHeader("token") String token) {
         List<JobTable> jobList = jobTableService.listById(token);
         return Result.success(jobList, "查询成功");
     }
@@ -80,5 +80,14 @@ public class JobTableController {
     public Result<JobTable> updateJobTable(@RequestBody JobTable jobTable) {
         jobTableService.updateJobTable(jobTable);
         return Result.success("更新成功");
+    }
+
+    @PostMapping("/deliver/{jdNo}")
+    public Result<?> delverResume(@PathVariable String jdNo) {
+        int choice = jobTableService.deliver(jdNo);
+        if (choice == 1)
+            return Result.success("成功投递");
+        else
+            return Result.success("已取消投递");
     }
 }

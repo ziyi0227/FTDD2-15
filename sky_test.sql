@@ -55,8 +55,9 @@ create table Job_table
 drop table if exists action_table;
 create table action_table
 (
-    user_id int not null,
-    job_id int not null ,
+    id varchar(32) not null ,
+    user_id varchar(32) not null,
+    job_id varchar(32) not null ,
     browsed varchar(1) default ('0') check ( browsed in('1','0') ),
     delivered varchar(1) default ('0') check ( delivered in('1','0') ),
     satisfied varchar(1) default ('0') check ( satisfied in('1','0') )

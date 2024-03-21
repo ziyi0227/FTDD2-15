@@ -27,7 +27,8 @@ public class FavorServiceImpl extends ServiceImpl<FavorMapper, Favor> implements
         String id= (String) map.get("id");
         //查询是否收藏过
         LambdaQueryWrapper<Favor> wrapper=new LambdaQueryWrapper<>();
-        wrapper.eq(Favor::getUserId,id);
+        wrapper.eq(Favor::getUserId,id)
+                .eq(Favor::getJdNo,jdNo);
         Favor favor = this.baseMapper.selectOne(wrapper);
 
         //无，则收藏 返回1

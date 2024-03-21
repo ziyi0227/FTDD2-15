@@ -53,7 +53,7 @@ public class FavorController {
         int choice= favorService.setFavor(jdNo);
         if(choice==0)
         {
-            return Result.success("已删除该收藏");
+            return Result.success(200000,"已删除该收藏");
         }
         return Result.success("收藏成功!");
     }

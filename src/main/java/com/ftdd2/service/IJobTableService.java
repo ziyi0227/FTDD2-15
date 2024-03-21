@@ -20,4 +20,6 @@ public interface IJobTableService extends IService<JobTable> {
     void updateJobTable(JobTable jobTable);
 
     List<JobTable> listById(String token);
+
+    int deliver(String jdNo);
 }

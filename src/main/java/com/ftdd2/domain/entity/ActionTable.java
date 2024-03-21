@@ -24,15 +24,18 @@ public class ActionTable implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Integer userId;
+    @TableId(value = "id", type = IdType.ASSIGN_UUID)
+    private String id;
 
-    private Integer jobId;
+    private String userId;
 
-    private String browsed;
+    private String jobId;
 
-    private String delivered;
+    private String browsed; //浏览
 
-    private String satisfied;
+    private String delivered; //投递
+
+    private String satisfied; //满意（hr）
 
 
 }
