@@ -108,14 +108,17 @@ public class UsersController {
         return Result.success("编辑成功");
     }
 
-    @PostMapping("/upload/avatar")
-    public Result<?>uploadAvatar(MultipartFile image){
-        UploadController up=new UploadController();
-        Result<String> result = up.upload(image);
-        String filePath = result.getData();
-        usersService.updateAvatar(filePath);
-        return result;
-    }
+
+    //使用uploadController
+
+//    @PostMapping("/upload/avatar")
+//    public Result<?>uploadAvatar(MultipartFile image){
+//        UploadController up=new UploadController();
+//        Result<String> result = up.upload(image);
+//        String filePath = result.getData();
+//        usersService.updateAvatar(filePath);
+//        return result;
+//    }
 
 
 

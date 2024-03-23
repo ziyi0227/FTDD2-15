@@ -21,7 +21,10 @@ spring:
     virtual-host: /ftdd2
     username: ftdd2
     password: ftdd2
-
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
 logging:
   level:
     com.ftdd2: debug

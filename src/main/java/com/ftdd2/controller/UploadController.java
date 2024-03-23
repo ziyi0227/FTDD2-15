@@ -5,6 +5,7 @@ import com.ftdd2.common.vo.Result;
 import com.ftdd2.utils.AliOssUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,8 +21,8 @@ import java.util.UUID;
 @Slf4j
 @Api(tags = "通用接口")
 public class UploadController {
-    @Autowired
-    private AliOssUtil aliOssUtil;
+  @Resource
+  private AliOssUtil aliOssUtil;
 
     @PostMapping("/upload")
     @ApiOperation("文件上传")

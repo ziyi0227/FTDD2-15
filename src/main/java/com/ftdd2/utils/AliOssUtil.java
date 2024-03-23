@@ -15,10 +15,10 @@ import java.io.ByteArrayInputStream;
 @Slf4j
 public class AliOssUtil {
 
-    private String endpoint;
-    private String accessKeyId;
-    private String accessKeySecret;
-    private String bucketName;
+    private String endpoint="oss-cn-hangzhou.aliyuncs.com";
+    private String accessKeyId="LTAI5tAXRFMD3u9Z1vEKd9KF";
+    private String accessKeySecret="mpOsSSkubmUpMVHNcvXD6FqHHqR5Q3";
+    private String bucketName="sky-take-out-runa";
 
     /**
      * 文件上传
