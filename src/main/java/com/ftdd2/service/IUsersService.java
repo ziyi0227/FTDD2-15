@@ -33,4 +33,6 @@ public interface IUsersService extends IService<User> {
     void updateInfo(UserInfoDTO userInfoDTO);
 
     void updateAvatar(String filePath);
+
+    Map<String, Object> getActionList();
 }

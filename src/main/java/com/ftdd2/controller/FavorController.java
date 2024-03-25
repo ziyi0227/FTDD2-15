@@ -44,13 +44,13 @@ public class FavorController {
 
     /**
      *
-     * @param jdNo
+     * @param jobId
      * @return
      */
     @ApiOperation("用户操作（收藏）")
-    @PutMapping("/{jdNo}")
-    public Result<?>setFavor(@PathVariable String jdNo){
-        int choice= favorService.setFavor(jdNo);
+    @PutMapping("/{jobId}")
+    public Result<?>setFavor(@PathVariable Integer jobId){
+        int choice= favorService.setFavor(jobId);
         if(choice==0)
         {
             return Result.success(200000,"已删除该收藏");

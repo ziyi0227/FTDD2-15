@@ -24,6 +24,7 @@ import org.springframework.boot.convert.PeriodUnit;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -108,20 +109,6 @@ public class UsersController {
         return Result.success("编辑成功");
     }
 
-
-    //使用uploadController
-
-//    @PostMapping("/upload/avatar")
-//    public Result<?>uploadAvatar(MultipartFile image){
-//        UploadController up=new UploadController();
-//        Result<String> result = up.upload(image);
-//        String filePath = result.getData();
-//        usersService.updateAvatar(filePath);
-//        return result;
-//    }
-
-
-
     @PostMapping("/uploadResume")
     public Result<?> uploadResume(MultipartFile File) throws Exception {
         Resume resume = new Resume();
@@ -140,10 +127,18 @@ public class UsersController {
         resume.setUserId(id);
         return Result.success(resume);
     }
+
+    @GetMapping("/actionInfo")
+    public Result<?>getActionInfo(){
+        Map<String, Object>data=usersService.getActionList();
+        return Result.success(data);
+    }
+
     private File convertMultiPartToFile(MultipartFile file) throws IOException {
         File convFile =new File(System.getProperty("java.io.tmpdir")+"/"+file.getOriginalFilename());
         file.transferTo(convFile);
         return convFile;
     }
+
 
 }

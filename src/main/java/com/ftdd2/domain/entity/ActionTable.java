@@ -29,7 +29,7 @@ public class ActionTable implements Serializable {
 
     private String userId;
 
-    private String jobId;
+    private Integer jobId;
 
     private String browsed; //浏览
 

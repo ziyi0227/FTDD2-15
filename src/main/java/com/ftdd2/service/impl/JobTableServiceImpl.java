@@ -82,18 +82,18 @@ public class JobTableServiceImpl extends ServiceImpl<JobTableMapper, JobTable> i
     }
 
     @Override
-    public int deliver(String jdNo) {
+    public int deliver(Integer jobId) {
         //取得当前用户id
         Map<String,Object>map=  ThreadLocalUtil.get();
         String userId= (String) map.get("id");
         //查询是否投递过
         LambdaQueryWrapper<ActionTable> wrapper= new LambdaQueryWrapper<>();
         wrapper.eq(ActionTable::getUserId,userId)
-                .eq(ActionTable::getJobId,jdNo);
+                .eq(ActionTable::getJobId,jobId);
         ActionTable table=actionTableMapper.selectOne(wrapper);
        if(table==null){
            ActionTable actionTable=new ActionTable();
-           actionTable.setJobId(jdNo);
+           actionTable.setJobId(jobId);
            actionTable.setUserId(userId);
            actionTable.setDelivered("1");
            actionTable.setBrowsed("1");

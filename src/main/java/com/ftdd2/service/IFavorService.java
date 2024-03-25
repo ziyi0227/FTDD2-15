@@ -13,5 +13,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IFavorService extends IService<Favor> {
 
-    int setFavor(String jdNo);
+    int setFavor(Integer jobId);
 }

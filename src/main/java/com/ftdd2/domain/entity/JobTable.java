@@ -1,10 +1,12 @@
 package com.ftdd2.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import java.time.LocalDate;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -33,6 +35,7 @@ public class JobTable implements Serializable {
     /**
      * 职位代码
      */
+
     private String jdNo;
 
     /**

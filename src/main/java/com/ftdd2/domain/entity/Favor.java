@@ -26,7 +26,7 @@ public class Favor implements Serializable {
 
     private String userId;
 
-    private String jdNo;
+    private Integer jobId;
 
     @TableId(value = "id", type = IdType.ASSIGN_UUID)
     private String id;

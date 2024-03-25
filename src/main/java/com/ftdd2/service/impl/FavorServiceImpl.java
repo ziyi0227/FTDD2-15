@@ -5,7 +5,9 @@ import com.ftdd2.domain.entity.Favor;
 import com.ftdd2.mapper.FavorMapper;
 import com.ftdd2.service.IFavorService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ftdd2.service.IJobTableService;
 import com.ftdd2.utils.ThreadLocalUtil;
+import io.swagger.models.auth.In;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -22,19 +24,19 @@ import java.util.Map;
 public class FavorServiceImpl extends ServiceImpl<FavorMapper, Favor> implements IFavorService {
 
     @Override
-    public int setFavor(String jdNo) {
+    public int setFavor(Integer jobId){
         Map<String,Object> map= ThreadLocalUtil.get();
         String id= (String) map.get("id");
         //查询是否收藏过
         LambdaQueryWrapper<Favor> wrapper=new LambdaQueryWrapper<>();
         wrapper.eq(Favor::getUserId,id)
-                .eq(Favor::getJdNo,jdNo);
+                .eq(Favor::getJobId, jobId);
         Favor favor = this.baseMapper.selectOne(wrapper);
 
         //无，则收藏 返回1
         if(favor==null){
             Favor newFavor=new Favor();
-            newFavor.setJdNo(jdNo);
+            newFavor.setJobId(jobId);
             newFavor.setUserId(id);
 
             this.baseMapper.insert(newFavor);

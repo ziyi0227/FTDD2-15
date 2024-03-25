@@ -82,9 +82,9 @@ public class JobTableController {
         return Result.success("更新成功");
     }
 
-    @PostMapping("/deliver/{jdNo}")
-    public Result<?> delverResume(@PathVariable String jdNo) {
-        int choice = jobTableService.deliver(jdNo);
+    @PostMapping("/deliver/{jobId}")
+    public Result<?> delverResume(@PathVariable Integer jobId) {
+        int choice = jobTableService.deliver(jobId);
         if (choice == 1)
             return Result.success("成功投递");
         else

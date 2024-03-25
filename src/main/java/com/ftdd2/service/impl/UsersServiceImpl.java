@@ -1,9 +1,14 @@
 package com.ftdd2.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ftdd2.domain.DTO.UserDTO;
 import com.ftdd2.domain.DTO.UserInfoDTO;
+import com.ftdd2.domain.entity.ActionTable;
+import com.ftdd2.domain.entity.Favor;
 import com.ftdd2.domain.entity.JobTable;
+import com.ftdd2.mapper.ActionTableMapper;
+import com.ftdd2.mapper.FavorMapper;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.ftdd2.domain.entity.User;
@@ -13,6 +18,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ftdd2.utils.JwtUtil;
 import com.ftdd2.utils.Md5Util;
 import com.ftdd2.utils.ThreadLocalUtil;
+import jakarta.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +26,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
-import java.util.List;
+
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -39,6 +45,11 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, User> implements 
     private RedisTemplate redisTemplate;
     @Autowired
     private UsersMapper userMapper;
+
+    @Resource
+    private ActionTableMapper actionTableMapper;
+    @Resource
+    private FavorMapper favorMapper;
 
     @Override
     public Map<String, Object> login(User user) {
@@ -155,6 +166,40 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, User> implements 
         User user=userMapper.selectById(id);
         user.setAvatar(filePath);
         userMapper.updateById(user);
+    }
+
+    @Override
+    public Map<String, Object> getActionList() {
+        //取得id
+      Map<String,Object>map = ThreadLocalUtil.get();
+        String id=(String)map.get("id");
+        LambdaQueryWrapper<ActionTable> wrapper=new LambdaQueryWrapper<>();
+        wrapper.eq(ActionTable::getUserId,id)
+                .eq(ActionTable::getBrowsed,1);
+        //简历被浏览次数
+        Long browsedCount = actionTableMapper.selectCount(wrapper);
+        wrapper.clear();
+        //收藏job数量
+        LambdaQueryWrapper<Favor> queryWrapper=new LambdaQueryWrapper<>();
+        queryWrapper.eq(Favor::getUserId,id);
+        Long favorCount = favorMapper.selectCount(queryWrapper);
+        //投递数量
+        wrapper.eq(ActionTable::getUserId,id)
+                .eq(ActionTable::getDelivered,id);
+        Long deliveredCount = actionTableMapper.selectCount(wrapper);
+        wrapper.clear();
+        //被多少hr满意
+        wrapper.eq(ActionTable::getUserId,id)
+                .eq(ActionTable::getSatisfied,id);
+        Long satisfiedCount = actionTableMapper.selectCount(wrapper);
+        //包装
+        Map<String, Object> result = new HashMap<>();
+        result.put("browsedCount", browsedCount);
+        result.put("collectedCount", favorCount);
+        result.put("deliveredCount", deliveredCount);
+        result.put("satisfiedCount", satisfiedCount);
+
+        return result;
     }
 
 
