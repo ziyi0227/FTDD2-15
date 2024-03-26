@@ -3,6 +3,7 @@ package com.ftdd2.service;
 import com.ftdd2.domain.DTO.UserDTO;
 import com.ftdd2.domain.DTO.UserInfoDTO;
 import com.ftdd2.domain.entity.JobTable;
+import com.ftdd2.domain.entity.Resume;
 import com.ftdd2.domain.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -35,4 +36,8 @@ public interface IUsersService extends IService<User> {
     void updateAvatar(String filePath);
 
     Map<String, Object> getActionList();
+
+    Map<String, Object> getResumeList(Long pageNo, Long pageSize);
+
+    void insertResume(Resume resume);
 }

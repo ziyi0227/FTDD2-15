@@ -71,6 +71,8 @@ create table Resume
 (
     id          int ,
     user_id     varchar(32) not null,
+    sex        tinyint default 3
+        checK (sex in (1, 2, 3)) comment ' 1男 2女 3隐私',
     name        varchar(32) not null,
     phone       varchar(11) not null,
     age         varchar(3) not null,

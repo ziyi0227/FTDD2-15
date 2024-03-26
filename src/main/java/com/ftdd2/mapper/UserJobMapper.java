@@ -2,6 +2,9 @@ package com.ftdd2.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ftdd2.domain.entity.UserJob;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,7 @@ import com.ftdd2.domain.entity.UserJob;
  */
 public interface UserJobMapper extends BaseMapper<UserJob> {
 
+
+    @Select("select job_id from ft_demo.user_job where user_id=#{id}")
+    List<Long> getJobList(String id);
 }

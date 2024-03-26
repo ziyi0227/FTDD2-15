@@ -4,15 +4,10 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ftdd2.domain.DTO.UserDTO;
 import com.ftdd2.domain.DTO.UserInfoDTO;
-import com.ftdd2.domain.entity.ActionTable;
-import com.ftdd2.domain.entity.Favor;
-import com.ftdd2.domain.entity.JobTable;
-import com.ftdd2.mapper.ActionTableMapper;
-import com.ftdd2.mapper.FavorMapper;
+import com.ftdd2.domain.entity.*;
+import com.ftdd2.mapper.*;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.ftdd2.domain.entity.User;
-import com.ftdd2.mapper.UsersMapper;
 import com.ftdd2.service.IUsersService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ftdd2.utils.JwtUtil;
@@ -27,8 +22,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+
+import static com.ftdd2.utils.ThreadLocalUtil.get;
 
 /**
  * <p>
@@ -50,6 +49,11 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, User> implements 
     private ActionTableMapper actionTableMapper;
     @Resource
     private FavorMapper favorMapper;
+    @Resource
+    private ResumeMapper resumeMapper;
+
+    @Resource
+    private UserJobMapper userJobMapper;
 
     @Override
     public Map<String, Object> login(User user) {
@@ -108,7 +112,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, User> implements 
 
     @Override
     public Map<String, Object> getFavorList(int pageNo, int pageSize) {
-        Map<String, Object> map = ThreadLocalUtil.get();
+        Map<String, Object> map = get();
         String id = (String) map.get("id");
         PageHelper.startPage(pageNo, pageSize);
         Page<JobTable> page = userMapper.getFavorList(pageNo, pageSize, id);
@@ -131,8 +135,8 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, User> implements 
             Map<String, Object> data = new HashMap<>();
             data.put("name", username);
             data.put("sex", user.getSex());
-            data.put("live_city",user.getLiveCity());
-            data.put("avatar",user.getAvatar());
+            data.put("live_city", user.getLiveCity());
+            data.put("avatar", user.getAvatar());
 
 
 //            List<String> roleList = this.baseMapper.getRoleNameByUserId(id);
@@ -151,19 +155,19 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, User> implements 
     @Override
     public void updateInfo(UserInfoDTO userInfoDTO) {
         User user = new User();
-        Map<String,Object>map=ThreadLocalUtil.get();
+        Map<String, Object> map = get();
         String id = (String) map.get("id");
         user.setId(id);
-        BeanUtils.copyProperties(userInfoDTO,user);
+        BeanUtils.copyProperties(userInfoDTO, user);
         //mp中null字段不会进行更新
         userMapper.updateById(user);
     }
 
     @Override
     public void updateAvatar(String filePath) {
-        Map<String,Object>map=ThreadLocalUtil.get();
+        Map<String, Object> map = get();
         String id = (String) map.get("id");
-        User user=userMapper.selectById(id);
+        User user = userMapper.selectById(id);
         user.setAvatar(filePath);
         userMapper.updateById(user);
     }
@@ -171,26 +175,26 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, User> implements 
     @Override
     public Map<String, Object> getActionList() {
         //取得id
-      Map<String,Object>map = ThreadLocalUtil.get();
-        String id=(String)map.get("id");
-        LambdaQueryWrapper<ActionTable> wrapper=new LambdaQueryWrapper<>();
-        wrapper.eq(ActionTable::getUserId,id)
-                .eq(ActionTable::getBrowsed,1);
+        Map<String, Object> map = get();
+        String id = (String) map.get("id");
+        LambdaQueryWrapper<ActionTable> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(ActionTable::getUserId, id)
+                .eq(ActionTable::getBrowsed, 1);
         //简历被浏览次数
         Long browsedCount = actionTableMapper.selectCount(wrapper);
         wrapper.clear();
         //收藏job数量
-        LambdaQueryWrapper<Favor> queryWrapper=new LambdaQueryWrapper<>();
-        queryWrapper.eq(Favor::getUserId,id);
+        LambdaQueryWrapper<Favor> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Favor::getUserId, id);
         Long favorCount = favorMapper.selectCount(queryWrapper);
         //投递数量
-        wrapper.eq(ActionTable::getUserId,id)
-                .eq(ActionTable::getDelivered,1);
+        wrapper.eq(ActionTable::getUserId, id)
+                .eq(ActionTable::getDelivered, 1);
         Long deliveredCount = actionTableMapper.selectCount(wrapper);
         wrapper.clear();
         //被多少hr满意
-        wrapper.eq(ActionTable::getUserId,id)
-                .eq(ActionTable::getSatisfied,1);
+        wrapper.eq(ActionTable::getUserId, id)
+                .eq(ActionTable::getSatisfied, 1);
         Long satisfiedCount = actionTableMapper.selectCount(wrapper);
         //包装
         Map<String, Object> result = new HashMap<>();
@@ -202,5 +206,36 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, User> implements 
         return result;
     }
 
+    @Override
+    public Map<String, Object> getResumeList(Long pageNo, Long pageSize) {
+        LambdaQueryWrapper<Resume> wrapper = new LambdaQueryWrapper<>();
+        //获取当前hr id
+        Map<String, Object> map = get();
+        String id = (String) map.get("id");
+        //获取hr发布过的招聘信息
+        List<Long> jobIdList=userJobMapper.getJobList(id);
+        //根据招聘信息id去Action表去找到简历id
+        LambdaQueryWrapper<ActionTable> queryWrapper=new LambdaQueryWrapper<>();
+        queryWrapper.in(ActionTable::getJobId,jobIdList)
+                .eq(ActionTable::getDelivered,"1");
+        List<ActionTable> actionTables = actionTableMapper.selectList(queryWrapper);
+        //根据简历id去resume查找
+        List<String> userIdList=actionTables.stream().map(ActionTable::getUserId).toList();
+//        List<Resume>resumeList = resumeMapper.selectByIds(userIdList);
+        //分页
+        PageHelper.startPage(pageNo.intValue(),pageSize.intValue());
+        Page<Resume> page =  resumeMapper.selectByIds(userIdList);
+        Map<String, Object> data = new HashMap<>();
+        data.put("total", page.getTotal());
+        data.put("rows", page.getResult());
+        return data;
+    }
 
+    @Override
+    public void insertResume(Resume resume) {
+      Map<String,Object> map= ThreadLocalUtil.get();
+        String id= (String) map.get("id");
+        resume.setUserId(id);
+        resumeMapper.insert(resume);
+    }
 }

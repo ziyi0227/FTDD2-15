@@ -86,12 +86,13 @@ public class UsersController {
         }
         return Result.fail(20003, "登录信息无效，重新登录");
     }
+
     @GetMapping("/Info")
     public Result<?> UserInfo() {
-        Map<String,Object> map = ThreadLocalUtil.get();
+        Map<String, Object> map = ThreadLocalUtil.get();
 
         String id = (String) map.get("id");
-        User user=usersService.getById(id);
+        User user = usersService.getById(id);
         return Result.success(user);
     }
 
@@ -112,12 +113,12 @@ public class UsersController {
     @PostMapping("/uploadResume")
     public Result<?> uploadResume(MultipartFile File) throws Exception {
         Resume resume = new Resume();
-        MultiValueMap<String,Object>body=new LinkedMultiValueMap<>();
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         System.out.println(File.getOriginalFilename());
-        File file =convertMultiPartToFile(File);
-        try{
-            body.add("Resume",new FileSystemResource(file));
-        }catch (Exception e){
+        File file = convertMultiPartToFile(File);
+        try {
+            body.add("Resume", new FileSystemResource(file));
+        } catch (Exception e) {
             e.printStackTrace();
         }
         String filePath = file.getAbsolutePath();
@@ -127,15 +128,27 @@ public class UsersController {
         resume.setUserId(id);
         return Result.success(resume);
     }
+    @PostMapping("/addResume")
+    public Result<?> addResume(@RequestBody Resume resume) {
+        usersService.insertResume(resume);
+        return Result.success("添加成功");
+    }
 
     @GetMapping("/actionInfo")
-    public Result<?>getActionInfo(){
-        Map<String, Object>data=usersService.getActionList();
+    public Result<?> getActionInfo() {
+        Map<String, Object> data = usersService.getActionList();
+        return Result.success(data);
+    }
+
+    @GetMapping("/resumeList")
+    public Result<?> getResume(@RequestParam Long pageNo,
+                               @RequestParam Long pageSize) {
+        Map<String,Object>data=usersService.getResumeList(pageNo,pageSize);
         return Result.success(data);
     }
 
     private File convertMultiPartToFile(MultipartFile file) throws IOException {
-        File convFile =new File(System.getProperty("java.io.tmpdir")+"/"+file.getOriginalFilename());
+        File convFile = new File(System.getProperty("java.io.tmpdir") + "/" + file.getOriginalFilename());
         file.transferTo(convFile);
         return convFile;
     }

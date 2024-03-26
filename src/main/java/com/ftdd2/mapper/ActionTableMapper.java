@@ -3,6 +3,8 @@ package com.ftdd2.mapper;
 import com.ftdd2.domain.entity.ActionTable;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
+import java.util.List;
+
 /**
  * <p>
  *  Mapper 接口
@@ -12,5 +14,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @since 2024-03-14
  */
 public interface ActionTableMapper extends BaseMapper<ActionTable> {
+
 
 }

@@ -2,6 +2,9 @@ package com.ftdd2.mapper;
 
 import com.ftdd2.domain.entity.Resume;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.github.pagehelper.Page;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface ResumeMapper extends BaseMapper<Resume> {
 
+    Page<Resume> selectByIds(List<String> userIdList);
 }
