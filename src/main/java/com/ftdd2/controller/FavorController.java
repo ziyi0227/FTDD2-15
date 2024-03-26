@@ -2,12 +2,14 @@ package com.ftdd2.controller;
 
 
 import com.ftdd2.common.vo.Result;
+import com.ftdd2.domain.entity.JobTable;
 import com.ftdd2.service.IFavorService;
 import com.ftdd2.service.IUsersService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -40,6 +42,12 @@ public class FavorController {
                                   @RequestParam int pageSize) {
         Map<String,Object> data=usersService.getFavorList(pageNo,pageSize);
         return Result.success(data);
+    }
+
+    @GetMapping("/all")
+    public Result<?> getAllFavor(){
+        List<JobTable> jobFavor=usersService.getAllFavor();
+        return Result.success(jobFavor,"查询成功");
     }
 
     /**

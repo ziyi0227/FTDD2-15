@@ -9,6 +9,7 @@ import com.ftdd2.domain.entity.Favor;
 import com.ftdd2.domain.entity.JobTable;
 import com.ftdd2.mapper.ActionTableMapper;
 import com.ftdd2.mapper.FavorMapper;
+import com.ftdd2.mapper.JobTableMapper;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.ftdd2.domain.entity.User;
@@ -25,10 +26,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -50,6 +54,8 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, User> implements 
     private ActionTableMapper actionTableMapper;
     @Resource
     private FavorMapper favorMapper;
+    @Resource
+    private JobTableMapper jobTableMapper;
 
     @Override
     public Map<String, Object> login(User user) {
@@ -117,6 +123,29 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, User> implements 
         data.put("rows", page.getResult());
         return data;
     }
+
+    @Override
+    public List<JobTable> getAllFavor() {
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String id = (String) map.get("id");
+
+        LambdaQueryWrapper<Favor> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Favor::getUserId, id);
+        List<Favor> list = favorMapper.selectList(wrapper);
+
+        List<Integer> jobIdList = list.stream()
+                                      .map(favor -> {return favor.getJobId();})
+                                      .collect(Collectors.toList());
+
+        List<JobTable> jobList = new ArrayList<>();
+        if(!jobIdList.isEmpty()){
+            LambdaQueryWrapper<JobTable> jobWrapper = new LambdaQueryWrapper<>();
+            jobWrapper.in(JobTable::getId, jobIdList);
+            jobList = jobTableMapper.selectList(jobWrapper);
+        }
+        return jobList;
+    }
+
 
     @Override
     public Map<String, Object> getUserInfo(String token) {
@@ -201,6 +230,5 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, User> implements 
 
         return result;
     }
-
 
 }

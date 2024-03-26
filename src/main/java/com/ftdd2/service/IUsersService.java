@@ -35,4 +35,6 @@ public interface IUsersService extends IService<User> {
     void updateAvatar(String filePath);
 
     Map<String, Object> getActionList();
+
+    List<JobTable> getAllFavor();
 }
