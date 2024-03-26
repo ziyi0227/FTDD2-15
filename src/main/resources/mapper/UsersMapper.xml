@@ -5,7 +5,7 @@
 
     <select id="getFavorList" resultType="com.ftdd2.domain.entity.JobTable">
         select * from ft_demo.job_table
-        where jd_no in
-       (select jd_no from ft_demo.favor where user_id=#{id})
+        where id in
+       (select job_id from ft_demo.favor where user_id=#{id})
     </select>
 </mapper>

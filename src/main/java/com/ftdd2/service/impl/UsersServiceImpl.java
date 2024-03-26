@@ -185,12 +185,12 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, User> implements 
         Long favorCount = favorMapper.selectCount(queryWrapper);
         //投递数量
         wrapper.eq(ActionTable::getUserId,id)
-                .eq(ActionTable::getDelivered,id);
+                .eq(ActionTable::getDelivered,1);
         Long deliveredCount = actionTableMapper.selectCount(wrapper);
         wrapper.clear();
         //被多少hr满意
         wrapper.eq(ActionTable::getUserId,id)
-                .eq(ActionTable::getSatisfied,id);
+                .eq(ActionTable::getSatisfied,1);
         Long satisfiedCount = actionTableMapper.selectCount(wrapper);
         //包装
         Map<String, Object> result = new HashMap<>();
