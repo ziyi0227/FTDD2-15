@@ -33,7 +33,6 @@ drop table if exists Job_table;
 create table Job_table
 (
     id          int AUTO_INCREMENT,
-    jd_no varchar(52) not null  comment '职位代码',
     jd_title varchar(52) not null  comment '职位名称',
     company     varchar(64) comment '公司名称',
     city varchar(32) comment '工作城市',
