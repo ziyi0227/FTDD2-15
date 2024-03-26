@@ -6,6 +6,12 @@ import com.ftdd2.domain.DTO.UserDTO;
 import com.ftdd2.domain.DTO.UserInfoDTO;
 import com.ftdd2.domain.entity.*;
 import com.ftdd2.mapper.*;
+import com.ftdd2.domain.entity.ActionTable;
+import com.ftdd2.domain.entity.Favor;
+import com.ftdd2.domain.entity.JobTable;
+import com.ftdd2.mapper.ActionTableMapper;
+import com.ftdd2.mapper.FavorMapper;
+import com.ftdd2.mapper.JobTableMapper;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.ftdd2.service.IUsersService;
@@ -20,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import java.util.List;
@@ -49,6 +56,8 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, User> implements 
     private ActionTableMapper actionTableMapper;
     @Resource
     private FavorMapper favorMapper;
+    @Resource
+    private JobTableMapper jobTableMapper;
     @Resource
     private ResumeMapper resumeMapper;
 
@@ -123,6 +132,29 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, User> implements 
     }
 
     @Override
+    public List<JobTable> getAllFavor() {
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String id = (String) map.get("id");
+
+        LambdaQueryWrapper<Favor> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Favor::getUserId, id);
+        List<Favor> list = favorMapper.selectList(wrapper);
+
+        List<Integer> jobIdList = list.stream()
+                                      .map(favor -> {return favor.getJobId();})
+                                      .collect(Collectors.toList());
+
+        List<JobTable> jobList = new ArrayList<>();
+        if(!jobIdList.isEmpty()){
+            LambdaQueryWrapper<JobTable> jobWrapper = new LambdaQueryWrapper<>();
+            jobWrapper.in(JobTable::getId, jobIdList);
+            jobList = jobTableMapper.selectList(jobWrapper);
+        }
+        return jobList;
+    }
+
+
+    @Override
     public Map<String, Object> getUserInfo(String token) {
         String obj = (String) redisTemplate.opsForValue().get(token);
         if (obj != null) {
@@ -135,8 +167,8 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, User> implements 
             Map<String, Object> data = new HashMap<>();
             data.put("name", username);
             data.put("sex", user.getSex());
-            data.put("live_city", user.getLiveCity());
-            data.put("avatar", user.getAvatar());
+            data.put("live_city",user.getLiveCity());
+            data.put("avatar",user.getAvatar());
 
 
 //            List<String> roleList = this.baseMapper.getRoleNameByUserId(id);
@@ -155,19 +187,19 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, User> implements 
     @Override
     public void updateInfo(UserInfoDTO userInfoDTO) {
         User user = new User();
-        Map<String, Object> map = get();
+        Map<String,Object>map=ThreadLocalUtil.get();
         String id = (String) map.get("id");
         user.setId(id);
-        BeanUtils.copyProperties(userInfoDTO, user);
+        BeanUtils.copyProperties(userInfoDTO,user);
         //mp中null字段不会进行更新
         userMapper.updateById(user);
     }
 
     @Override
     public void updateAvatar(String filePath) {
-        Map<String, Object> map = get();
+        Map<String,Object>map=ThreadLocalUtil.get();
         String id = (String) map.get("id");
-        User user = userMapper.selectById(id);
+        User user=userMapper.selectById(id);
         user.setAvatar(filePath);
         userMapper.updateById(user);
     }
@@ -175,21 +207,21 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, User> implements 
     @Override
     public Map<String, Object> getActionList() {
         //取得id
-        Map<String, Object> map = get();
-        String id = (String) map.get("id");
-        LambdaQueryWrapper<ActionTable> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(ActionTable::getUserId, id)
-                .eq(ActionTable::getBrowsed, 1);
+      Map<String,Object>map = ThreadLocalUtil.get();
+        String id=(String)map.get("id");
+        LambdaQueryWrapper<ActionTable> wrapper=new LambdaQueryWrapper<>();
+        wrapper.eq(ActionTable::getUserId,id)
+                .eq(ActionTable::getBrowsed,1);
         //简历被浏览次数
         Long browsedCount = actionTableMapper.selectCount(wrapper);
         wrapper.clear();
         //收藏job数量
-        LambdaQueryWrapper<Favor> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(Favor::getUserId, id);
+        LambdaQueryWrapper<Favor> queryWrapper=new LambdaQueryWrapper<>();
+        queryWrapper.eq(Favor::getUserId,id);
         Long favorCount = favorMapper.selectCount(queryWrapper);
         //投递数量
-        wrapper.eq(ActionTable::getUserId, id)
-                .eq(ActionTable::getDelivered, 1);
+        wrapper.eq(ActionTable::getUserId,id)
+                .eq(ActionTable::getDelivered,1);
         Long deliveredCount = actionTableMapper.selectCount(wrapper);
         wrapper.clear();
         //被多少hr满意

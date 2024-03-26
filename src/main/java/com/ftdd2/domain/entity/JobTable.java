@@ -33,12 +33,6 @@ public class JobTable implements Serializable {
     private Integer id;
 
     /**
-     * 职位代码
-     */
-
-    private String jdNo;
-
-    /**
      * 职位名称
      */
     private String jdTitle;
