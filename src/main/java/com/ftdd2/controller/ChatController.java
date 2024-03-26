@@ -3,6 +3,7 @@ package com.ftdd2.controller;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.json.JSONUtil;
 
+import com.ftdd2.common.vo.Result;
 import com.ftdd2.domain.ChatRequest;
 import com.ftdd2.domain.ChatResponse;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ChatController {
     @PostMapping("/chat")//文档要求使用post请求
-    public ChatResponse chat(String q){
+    public Result<ChatResponse> chat(String q){
         String url = "https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation";
         String ApiKey = "sk-0ce6f90bbbfb4006b98582ef8bc3438d";
 
@@ -25,6 +26,6 @@ public class ChatController {
                 .body(json)
                 .execute().body();
         System.out.println(result);
-        return JSONUtil.toBean(result, ChatResponse.class);
+        return Result.success(JSONUtil.toBean(result, ChatResponse.class));
     }
 }
