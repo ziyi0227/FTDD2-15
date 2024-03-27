@@ -97,4 +97,20 @@ public class JobTableController {
         Map<String,Object> data=jobTableService.getDeliverList(pageNo,pageSize);
         return Result.success(data);
     }
+
+    /**
+     * 统计热门公司(投递次数最多的公司)
+     */
+    @GetMapping("/hot/company")
+    public Result<?> getHotCompany(){
+        //前四名公司
+        List<Map<String,Object>> list=jobTableService.getHotCompany();
+        return Result.success(list);
+    }
+
+    @GetMapping("/getCompanyTotal")
+    public Result<?> getCompanyTotal(){
+        Long total = jobTableService.countUnique();
+        return Result.success(total);
+    }
 }

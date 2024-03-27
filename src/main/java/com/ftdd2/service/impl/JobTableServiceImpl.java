@@ -120,4 +120,14 @@ public class JobTableServiceImpl extends ServiceImpl<JobTableMapper, JobTable> i
 
         return Map.of("total", jobList.size(), "rows", jobList);
     }
+
+    @Override
+    public List<Map<String, Object>> getHotCompany() {
+        return jobTableMapper.getHotCompany();
+    }
+
+    @Override
+    public Long countUnique() {
+        return jobTableMapper.countUnique();
+    }
 }

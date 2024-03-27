@@ -4,6 +4,7 @@ import com.ftdd2.domain.entity.ActionTable;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -17,4 +18,6 @@ public interface ActionTableMapper extends BaseMapper<ActionTable> {
 
 
     List<Integer> getDeliverList(int pageNo, int pageSize, String id);
+
+
 }

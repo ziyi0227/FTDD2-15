@@ -25,4 +25,8 @@ public interface IJobTableService extends IService<JobTable> {
     int deliver(Integer jobId);
 
     Map<String, Object> getDeliverList(int pageNo, int pageSize);
+
+    List<Map<String, Object>> getHotCompany();
+
+    Long countUnique();
 }

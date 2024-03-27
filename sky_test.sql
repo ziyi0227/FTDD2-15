@@ -62,7 +62,7 @@ create table action_table
     delivered varchar(1) default ('0') check ( delivered in('1','0') ),
     satisfied varchar(1) default ('0') check ( satisfied in('1','0') )
 );
-
+alter table action_table add column updated_at timestamp default current_timestamp on update current_timestamp;
 
 
 drop table if exists Resume;
@@ -70,6 +70,7 @@ create table Resume
 (
     id          int ,
     user_id     varchar(32) not null,
+    major       varchar(32) not null,
     sex        tinyint default 3
         checK (sex in (1, 2, 3)) comment ' 1男 2女 3隐私',
     name        varchar(32) not null,
@@ -88,6 +89,7 @@ create table Resume
     cur_jd_type varchar(32) not null
 
 ) engine=Innodb comment '简历表';
+alter table Resume add column major varchar(32);
 
 drop table if exists user_exposure;
 create table user_exposure

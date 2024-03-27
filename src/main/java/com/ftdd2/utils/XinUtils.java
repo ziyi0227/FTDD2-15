@@ -88,6 +88,7 @@ public static Resume transform(JSONObject o) {
     String desireJdType = basicInfoJson.optString("desired_position", "未提供");
     String desireCity = basicInfoJson.optString("expect_location", "未提供");
     String desireJdIndustry = basicInfoJson.optString("desired_industry", "未提供");
+    String major = basicInfoJson.optString("major", "未提供");
 
 // 工作经验
     JSONArray workExperienceArray = parsingResult.getJSONArray("work_experience");
@@ -141,6 +142,7 @@ public static Resume transform(JSONObject o) {
             .currentSalaryId((String) basicInfoJson.get("current_salary"))
             .curJdType((String) basicInfoJson.get("current_position"))
             .curIndustry((String) basicInfoJson.get("industry"))
+            .major(major)
             .build();
 
     return resume;

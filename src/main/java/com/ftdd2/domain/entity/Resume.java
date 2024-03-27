@@ -33,6 +33,8 @@ public class Resume implements Serializable {
 
     private String userId;
 
+    private String major;
+
     private String sex;
 
     private String name;

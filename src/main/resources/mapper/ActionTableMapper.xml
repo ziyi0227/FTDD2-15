@@ -5,4 +5,5 @@
     <select id="getDeliverList" resultType="java.lang.Integer">
         SELECT job_id FROM action_table WHERE delivered = 1 AND user_id = #{id}
     </select>
+
 </mapper>
