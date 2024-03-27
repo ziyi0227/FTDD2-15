@@ -90,4 +90,11 @@ public class JobTableController {
         else
             return Result.success("已取消投递");
     }
+
+    @GetMapping("/deliver/list")
+    public Result<?>getDeliverList(@RequestParam int pageNo,
+                                   @RequestParam int pageSize){
+        Map<String,Object> data=jobTableService.getDeliverList(pageNo,pageSize);
+        return Result.success(data);
+    }
 }

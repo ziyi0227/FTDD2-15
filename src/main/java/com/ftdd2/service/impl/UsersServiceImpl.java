@@ -270,4 +270,53 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, User> implements 
         resume.setUserId(id);
         resumeMapper.insert(resume);
     }
+
+    @Override
+    public Map<String, Object> getActionListHr() {
+        //取得id
+        Map<String,Object>map = ThreadLocalUtil.get();
+        String id=(String)map.get("id");
+        LambdaQueryWrapper<ActionTable> wrapper=new LambdaQueryWrapper<>();
+        wrapper.eq(ActionTable::getUserId,id)
+                .eq(ActionTable::getSatisfied,1);
+
+        //满意的简历数量
+        Long satisfiedCount = actionTableMapper.selectCount(wrapper);
+
+        //发布招聘信息数量
+        LambdaQueryWrapper<UserJob> jobWrapper=new LambdaQueryWrapper<>();
+        jobWrapper.eq(UserJob::getUserId,id);
+        Long jobCount = userJobMapper.selectCount(jobWrapper);
+        //投递人数
+        wrapper.clear();
+        //先取得自己发布的简历id
+        List<Long> jobIdList=userJobMapper.getJobList(id);
+        //根据招聘信息id去Action表去找到简历id
+        LambdaQueryWrapper<ActionTable> queryWrapper=new LambdaQueryWrapper<>();
+        queryWrapper.in(ActionTable::getJobId,jobIdList)
+                .eq(ActionTable::getDelivered,"1");
+        List<ActionTable> actionTables = actionTableMapper.selectList(queryWrapper);
+        int deliveredCount = actionTables.size();
+        //包装
+        Map<String, Object> result = new HashMap<>();
+        result.put("satisfiedCount", satisfiedCount);
+        result.put("jobCount", jobCount);
+        result.put("deliveredCount", deliveredCount);
+        return result;
+    }
+
+    @Override
+    public Map<String, Object> getJobList(int pageNo, int pageSize) {
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String id = (String) map.get("id");
+        List<Long> jobIdList=userJobMapper.getJobList(id);
+        PageHelper.startPage(pageNo,pageSize);
+        LambdaQueryWrapper<JobTable> wrapper=new LambdaQueryWrapper<>();
+        wrapper.in(JobTable::getId,jobIdList);
+        List<JobTable> jobList = jobTableMapper.selectList(wrapper);
+        Map<String, Object> data = new HashMap<>();
+        data.put("total", jobList.size());
+        data.put("rows", jobList);
+        return data;
+    }
 }

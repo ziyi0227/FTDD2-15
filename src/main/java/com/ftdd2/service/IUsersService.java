@@ -42,4 +42,8 @@ public interface IUsersService extends IService<User> {
     Map<String, Object> getResumeList(Long pageNo, Long pageSize);
 
     void insertResume(Resume resume);
+
+    Map<String, Object> getActionListHr();
+
+    Map<String, Object> getJobList(int pageNo, int pageSize);
 }

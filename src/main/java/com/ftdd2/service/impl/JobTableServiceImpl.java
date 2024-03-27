@@ -104,4 +104,20 @@ public class JobTableServiceImpl extends ServiceImpl<JobTableMapper, JobTable> i
         actionTableMapper.deleteById(table);
         return 0;
     }
+
+    @Override
+    public Map<String, Object> getDeliverList(int pageNo, int pageSize) {
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String id = (String) map.get("id");
+
+        List<Integer> jobIdList = actionTableMapper.getDeliverList(pageNo, pageSize, id);
+        List<JobTable> jobList = new ArrayList<>();
+        if (!jobIdList.isEmpty()) {
+            LambdaQueryWrapper<JobTable> jobWrapper = new LambdaQueryWrapper<>();
+            jobWrapper.in(JobTable::getId, jobIdList);
+            jobList = jobTableMapper.selectList(jobWrapper);
+        }
+
+        return Map.of("total", jobList.size(), "rows", jobList);
+    }
 }

@@ -16,4 +16,5 @@ import java.util.List;
 public interface ActionTableMapper extends BaseMapper<ActionTable> {
 
 
+    List<Integer> getDeliverList(int pageNo, int pageSize, String id);
 }

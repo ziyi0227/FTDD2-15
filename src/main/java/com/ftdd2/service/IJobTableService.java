@@ -4,6 +4,7 @@ import com.ftdd2.domain.entity.JobTable;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -22,4 +23,6 @@ public interface IJobTableService extends IService<JobTable> {
     List<JobTable> listById(String token);
 
     int deliver(Integer jobId);
+
+    Map<String, Object> getDeliverList(int pageNo, int pageSize);
 }

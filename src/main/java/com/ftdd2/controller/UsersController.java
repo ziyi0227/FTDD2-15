@@ -11,6 +11,7 @@ import com.ftdd2.domain.entity.JobTable;
 import com.ftdd2.domain.entity.Resume;
 import com.ftdd2.domain.entity.User;
 
+import com.ftdd2.domain.entity.UserJob;
 import com.ftdd2.service.IFavorService;
 import com.ftdd2.service.IJobTableService;
 import com.ftdd2.service.IUsersService;
@@ -134,16 +135,45 @@ public class UsersController {
         return Result.success("添加成功");
     }
 
+    /**
+     * 针对用户
+     * @return
+     */
     @GetMapping("/actionInfo")
     public Result<?> getActionInfo() {
         Map<String, Object> data = usersService.getActionList();
         return Result.success(data);
     }
+    /**
+     * 针对hr
+     */
+    @GetMapping("/actionInfoHr")
+    public Result<?> getActionInfoHr() {
+        Map<String, Object> data = usersService.getActionListHr();
+        return Result.success(data);
+    }
 
+    /**
+     * hr查看已投简历
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
     @GetMapping("/resumeList")
     public Result<?> getResume(@RequestParam Long pageNo,
                                @RequestParam Long pageSize) {
         Map<String,Object>data=usersService.getResumeList(pageNo,pageSize);
+        return Result.success(data);
+    }
+
+    /**
+     * hr自己发布的职位
+     * @return
+     */
+    @GetMapping("/jobList")
+    public Result<?> getJobList(@RequestParam int pageNo,
+                                @RequestParam int pageSize) {
+      Map<String,Object>data=usersService.getJobList(pageNo,pageSize);
         return Result.success(data);
     }
 
