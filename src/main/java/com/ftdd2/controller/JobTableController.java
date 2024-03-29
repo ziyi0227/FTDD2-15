@@ -108,6 +108,11 @@ public class JobTableController {
         return Result.success(list);
     }
 
+
+    /**
+     * 统计公司总数
+     * @return
+     */
     @GetMapping("/getCompanyTotal")
     public Result<?> getCompanyTotal(){
         Long total = jobTableService.countUnique();

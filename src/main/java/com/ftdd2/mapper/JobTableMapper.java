@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +24,8 @@ public interface JobTableMapper extends BaseMapper<JobTable> {
     @MapKey("company")
     List<Map<String, Object>> getHotCompany();
 
-    @Select("select count(distinct company) from job_table")
+    @Select("select count(*) from action_table join job_table on action_table.job_id = job_table.id where action_table.delivered = 1")
     Long countUnique();
+
+    List<String> getHotJob(LocalDateTime nowTime);
 }

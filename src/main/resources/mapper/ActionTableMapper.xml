@@ -5,5 +5,18 @@
     <select id="getDeliverList" resultType="java.lang.Integer">
         SELECT job_id FROM action_table WHERE delivered = 1 AND user_id = #{id}
     </select>
+    <select id="getNowTitle" resultType="java.lang.String">
+        select jd_title
+        from job_table,
+             favor,
+             action_table
+        where job_table.id = favor.job_id
+           or (action_table.delivered = 1
+            and job_table.id = action_table.job_id)
+        group by jd_title
+        order by count(*) desc
+        limit 5
+    </select>
+
 
 </mapper>

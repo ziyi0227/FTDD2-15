@@ -1,5 +1,6 @@
 package com.ftdd2.domain.entity;
 
+import cn.hutool.core.date.DateTime;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -37,5 +38,6 @@ public class ActionTable implements Serializable {
 
     private String satisfied; //满意（hr）
 
+    private DateTime createTime;
 
 }

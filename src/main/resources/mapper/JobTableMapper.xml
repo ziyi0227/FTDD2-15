@@ -4,14 +4,27 @@
 
     <select id="getHotCompany" resultType="java.util.Map">
         SELECT
-            company,
+            job_table.company,
             COUNT(*) AS count
         FROM
-            job_table
+            action_table
+        join job_table on job_table.id = action_table.job_id and action_table.delivered = 1
         GROUP BY
-            company
+            job_table.company
         ORDER BY
             count DESC
         LIMIT 4
+    </select>
+    <select id="getHotJob" resultType="java.lang.String">
+        SELECT
+            job_table.jd_title
+        FROM
+            action_table,job_table,favor where job_table.id = action_table.job_id and (action_table.delivered = 1
+            or favor.job_id = job_table.id)
+        GROUP BY
+            job_table.jd_title
+        ORDER BY
+            COUNT(*) DESC
+        LIMIT 5
     </select>
 </mapper>

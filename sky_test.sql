@@ -62,7 +62,8 @@ create table action_table
     delivered varchar(1) default ('0') check ( delivered in('1','0') ),
     satisfied varchar(1) default ('0') check ( satisfied in('1','0') )
 );
-alter table action_table add column updated_at timestamp default current_timestamp on update current_timestamp;
+alter table action_table drop column updateTime;
+alter table action_table add column updateTime dateTime default now();
 
 
 drop table if exists Resume;
@@ -117,6 +118,8 @@ create table Favor
    job_id varchar(52) not null,
    id varchar(32) primary Key
 )comment '收藏表';
+alter table favor
+    add column updateTime datetime default now();
 
 
 -- drop table if exists address_table;

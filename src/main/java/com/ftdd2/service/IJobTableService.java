@@ -1,8 +1,10 @@
 package com.ftdd2.service;
 
+import com.ftdd2.common.vo.Result;
 import com.ftdd2.domain.entity.JobTable;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -29,4 +31,7 @@ public interface IJobTableService extends IService<JobTable> {
     List<Map<String, Object>> getHotCompany();
 
     Long countUnique();
+
+
+    List<String> getNowTitle(LocalDateTime now);
 }

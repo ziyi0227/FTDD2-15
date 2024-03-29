@@ -1,6 +1,7 @@
 package com.ftdd2.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.ftdd2.common.vo.Result;
 import com.ftdd2.domain.entity.ActionTable;
 import com.ftdd2.domain.entity.JobTable;
 import com.ftdd2.domain.entity.UserJob;
@@ -15,9 +16,8 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -130,4 +130,11 @@ public class JobTableServiceImpl extends ServiceImpl<JobTableMapper, JobTable> i
     public Long countUnique() {
         return jobTableMapper.countUnique();
     }
+
+    @Override
+    public List<String> getNowTitle(LocalDateTime now) {
+        return actionTableMapper.getNowTitle(now);
+    }
+
+
 }

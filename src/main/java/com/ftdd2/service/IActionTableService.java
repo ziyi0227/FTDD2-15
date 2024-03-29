@@ -3,6 +3,8 @@ package com.ftdd2.service;
 import com.ftdd2.domain.entity.ActionTable;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.Map;
+
 /**
  * <p>
  *  服务类
@@ -13,4 +15,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IActionTableService extends IService<ActionTable> {
 
+    Map<String,Long> getTitleCount(String jobTitle);
 }
