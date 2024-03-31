@@ -24,21 +24,20 @@ public class ActionTableServiceImpl extends ServiceImpl<ActionTableMapper, Actio
 
     @Override
     public Map<String, Long> getTitleCount(String jobTitle) {
-        //计算该职位12个月内的投递量和收藏量
-        Map<String,Long>data=new HashMap<>();
+        // 计算该职位的投递量和收藏量
+        Map<String, Long> data = new HashMap<>();
         Calendar calendar = Calendar.getInstance();
-        //获取当前月份
-        int currentMonth = calendar.get(Calendar.MONTH)+1;
-        int temp=currentMonth;
-        for(int i=0;i<temp;i++){
-            //获取当前月份的投递量
-            Long deliverCount = this.baseMapper.getDeliverCount(jobTitle, currentMonth);
-            //获取当前月份的收藏量
-            Long collectCount = this.baseMapper.getCollectCount(jobTitle, currentMonth);
-            Long totalCount=deliverCount+collectCount;
-            data.put(currentMonth +"月",totalCount);
-            currentMonth--;
+        // 获取当前月份
+        int currentMonth = calendar.get(Calendar.MONTH) + 1;
+        for (int i = 1; i <= currentMonth; i++) {
+            // 获取当前月份的投递量
+            Long deliverCount = this.baseMapper.getDeliverCount(jobTitle, i);
+            // 获取当前月份的收藏量
+            Long collectCount = this.baseMapper.getCollectCount(jobTitle, i);
+            Long totalCount = deliverCount + collectCount;
+            data.put(i + "月", totalCount);
         }
         return data;
     }
+
 }

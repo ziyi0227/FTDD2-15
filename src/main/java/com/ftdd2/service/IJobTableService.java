@@ -1,6 +1,5 @@
 package com.ftdd2.service;
 
-import com.ftdd2.common.vo.Result;
 import com.ftdd2.domain.entity.JobTable;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -34,4 +33,8 @@ public interface IJobTableService extends IService<JobTable> {
 
 
     List<String> getNowTitle(LocalDateTime now);
+
+    List<Map<String, Long>> getNowMajor(LocalDateTime now);
+
+    Map<String, Long> getHotMajor(LocalDateTime day);
 }

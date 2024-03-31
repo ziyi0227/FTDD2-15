@@ -2,6 +2,8 @@ package com.ftdd2.mapper;
 
 import com.ftdd2.domain.entity.ActionTable;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.MapKey;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 
 import java.time.LocalDateTime;
@@ -38,4 +40,11 @@ public interface ActionTableMapper extends BaseMapper<ActionTable> {
             "and month(updateTime) = #{currentMonth} " +
             "and favor.job_id = job_table.id " )
     Long getCollectCount(String jobTitle, int currentMonth);
+
+
+    @MapKey("major")
+    List<Map<String, Long>>  getNowMajor(LocalDateTime time);
+
+
+    Map<String, Long> getHotMajor(LocalDateTime day);
 }

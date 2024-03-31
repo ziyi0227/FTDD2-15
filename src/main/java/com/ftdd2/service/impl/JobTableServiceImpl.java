@@ -1,7 +1,6 @@
 package com.ftdd2.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.ftdd2.common.vo.Result;
 import com.ftdd2.domain.entity.ActionTable;
 import com.ftdd2.domain.entity.JobTable;
 import com.ftdd2.domain.entity.UserJob;
@@ -44,7 +43,7 @@ public class JobTableServiceImpl extends ServiceImpl<JobTableMapper, JobTable> i
     public void addJobTable(JobTable jobTable, String token) {
         this.baseMapper.insert(jobTable);
 
-        Map<String,Object> claims = JwtUtil.parseToken(token);
+        Map<String, Object> claims = JwtUtil.parseToken(token);
         String userId = (String) claims.get("id");
         Integer jobId = jobTable.getId();
         if (jobId != null) {
@@ -59,16 +58,18 @@ public class JobTableServiceImpl extends ServiceImpl<JobTableMapper, JobTable> i
 
     @Override
     public List<JobTable> listById(String token) {
-        Map<String,Object> claims = JwtUtil.parseToken(token);
+        Map<String, Object> claims = JwtUtil.parseToken(token);
         String userId = (String) claims.get("id");
 
         LambdaQueryWrapper<UserJob> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(UserJob::getUserId,userId);
+        wrapper.eq(UserJob::getUserId, userId);
         List<UserJob> userJobList = userJobMapper.selectList(wrapper);
 
         List<Integer> jobIdList = userJobList.stream()
-                                             .map(userJob -> {return userJob.getJobId();})
-                                             .collect(Collectors.toList());
+                .map(userJob -> {
+                    return userJob.getJobId();
+                })
+                .collect(Collectors.toList());
 
         // 查询对应的岗位信息
         List<JobTable> jobTableList = new ArrayList<>();
@@ -84,22 +85,22 @@ public class JobTableServiceImpl extends ServiceImpl<JobTableMapper, JobTable> i
     @Override
     public int deliver(Integer jobId) {
         //取得当前用户id
-        Map<String,Object>map=  ThreadLocalUtil.get();
-        String userId= (String) map.get("id");
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String userId = (String) map.get("id");
         //查询是否投递过
-        LambdaQueryWrapper<ActionTable> wrapper= new LambdaQueryWrapper<>();
-        wrapper.eq(ActionTable::getUserId,userId)
-                .eq(ActionTable::getJobId,jobId);
-        ActionTable table=actionTableMapper.selectOne(wrapper);
-       if(table==null){
-           ActionTable actionTable=new ActionTable();
-           actionTable.setJobId(jobId);
-           actionTable.setUserId(userId);
-           actionTable.setDelivered("1");
-           actionTable.setBrowsed("1");
-           actionTableMapper.insert(actionTable);
-           return 1;
-       }
+        LambdaQueryWrapper<ActionTable> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(ActionTable::getUserId, userId)
+                .eq(ActionTable::getJobId, jobId);
+        ActionTable table = actionTableMapper.selectOne(wrapper);
+        if (table == null) {
+            ActionTable actionTable = new ActionTable();
+            actionTable.setJobId(jobId);
+            actionTable.setUserId(userId);
+            actionTable.setDelivered("1");
+            actionTable.setBrowsed("1");
+            actionTableMapper.insert(actionTable);
+            return 1;
+        }
         //投递过则取消投递
         actionTableMapper.deleteById(table);
         return 0;
@@ -134,6 +135,23 @@ public class JobTableServiceImpl extends ServiceImpl<JobTableMapper, JobTable> i
     @Override
     public List<String> getNowTitle(LocalDateTime now) {
         return actionTableMapper.getNowTitle(now);
+    }
+
+    @Override
+    public List<Map<String, Long>> getNowMajor(LocalDateTime now) {
+        //统计一周的三个热门专业（每天）根据投递情况计算
+
+//        for (int i = 0; i < 7; i++) {
+        LocalDateTime time = now.minusDays(0);
+        List<Map<String, Long>> majorList = actionTableMapper.getNowMajor(time);
+
+//        }
+        return majorList;
+    }
+
+    @Override
+    public Map<String, Long> getHotMajor(LocalDateTime day) {
+        return actionTableMapper.getHotMajor(day);
     }
 
 
