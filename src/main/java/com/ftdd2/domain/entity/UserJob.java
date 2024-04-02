@@ -34,7 +34,7 @@ public class UserJob implements Serializable {
 
     private String userId;
 
-    private Integer jobId;
+    private String jobId;
 
 
 }

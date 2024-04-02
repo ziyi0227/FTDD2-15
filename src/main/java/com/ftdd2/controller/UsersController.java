@@ -14,11 +14,13 @@ import com.ftdd2.domain.entity.User;
 import com.ftdd2.domain.entity.UserJob;
 import com.ftdd2.service.IFavorService;
 import com.ftdd2.service.IJobTableService;
+import com.ftdd2.service.IResumeService;
 import com.ftdd2.service.IUsersService;
 import com.ftdd2.utils.ThreadLocalUtil;
 import com.ftdd2.utils.XinUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import jakarta.annotation.Resource;
 import org.apache.ibatis.io.ResolverUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.convert.PeriodUnit;
@@ -50,6 +52,8 @@ public class UsersController {
 
     @Autowired
     private IUsersService usersService;
+    @Resource
+    private IResumeService resumeService;
 
     /**
      * @param user
@@ -97,6 +101,17 @@ public class UsersController {
         return Result.success(user);
     }
 
+    @GetMapping("/info/{id}")
+    public Result<?> getUserInfoById(@PathVariable("id") String id) {
+        LambdaQueryWrapper<Resume> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Resume::getUserId, id);
+        Resume resume = resumeService.getOne(wrapper);
+        resume.setName(resume.getName().charAt(0) + "**");
+        if (resume.getPhone().length() == 11) {
+            resume.setPhone(resume.getPhone().substring(0, 3) + "****" + resume.getPhone().substring(7));
+        }
+        return Result.success(resume);
+    }
 
     @PostMapping("/logout")
     public Result<?> logout(@RequestHeader("token") String token) {
@@ -129,6 +144,7 @@ public class UsersController {
         resume.setUserId(id);
         return Result.success(resume);
     }
+
     @PostMapping("/addResume")
     public Result<?> addResume(@RequestBody Resume resume) {
         usersService.insertResume(resume);
@@ -137,6 +153,7 @@ public class UsersController {
 
     /**
      * 针对用户
+     *
      * @return
      */
     @GetMapping("/actionInfo")
@@ -144,6 +161,7 @@ public class UsersController {
         Map<String, Object> data = usersService.getActionList();
         return Result.success(data);
     }
+
     /**
      * 针对hr
      */
@@ -155,6 +173,7 @@ public class UsersController {
 
     /**
      * hr查看已投简历
+     *
      * @param pageNo
      * @param pageSize
      * @return
@@ -162,18 +181,19 @@ public class UsersController {
     @GetMapping("/resumeList")
     public Result<?> getResume(@RequestParam Long pageNo,
                                @RequestParam Long pageSize) {
-        Map<String,Object>data=usersService.getResumeList(pageNo,pageSize);
+        Map<String, Object> data = usersService.getResumeList(pageNo, pageSize);
         return Result.success(data);
     }
 
     /**
      * hr自己发布的职位
+     *
      * @return
      */
     @GetMapping("/jobList")
     public Result<?> getJobList(@RequestParam int pageNo,
                                 @RequestParam int pageSize) {
-      Map<String,Object>data=usersService.getJobList(pageNo,pageSize);
+        Map<String, Object> data = usersService.getJobList(pageNo, pageSize);
         return Result.success(data);
     }
 

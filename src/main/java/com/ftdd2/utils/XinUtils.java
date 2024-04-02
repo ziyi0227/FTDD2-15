@@ -112,9 +112,9 @@ public static Resume transform(JSONObject o) {
 
 // 开始工作年份
     String workStartYearStr = basicInfoJson.optString("work_start_year", "");
-    Year startWorkDate;
+    String startWorkDate;
     if (!workStartYearStr.isEmpty()) {
-        startWorkDate = Year.parse(workStartYearStr);
+        startWorkDate =workStartYearStr;
     } else {
         // 提供一个默认值或者不设置该字段（根据业务需求）
         startWorkDate = null;

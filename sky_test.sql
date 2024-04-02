@@ -32,7 +32,7 @@ alter table users add column avatar varchar(512);
 drop table if exists Job_table;
 create table Job_table
 (
-    id          int AUTO_INCREMENT,
+    id          varchar(32),
     jd_title varchar(52) not null  comment '职位名称',
     company     varchar(64) comment '公司名称',
     city varchar(32) comment '工作城市',
@@ -55,7 +55,6 @@ create table Job_table
 drop table if exists action_table;
 create table action_table
 (
-    id varchar(32) not null ,
     user_id varchar(32) not null,
     job_id varchar(32) not null ,
     browsed varchar(1) default ('0') check ( browsed in('1','0') ),
@@ -71,23 +70,23 @@ create table Resume
 (
     id          int ,
     user_id     varchar(32) not null,
-    major       varchar(32) not null,
+    major       varchar(32) ,
     sex        tinyint default 3
         checK (sex in (1, 2, 3)) comment ' 1男 2女 3隐私',
-    name        varchar(32) not null,
-    phone       varchar(11) not null,
+    name        varchar(32) ,
+    phone       varchar(11) default ('未提供'),
     age         varchar(3) not null,
-    live_city   varchar(32) not null,
-    degree      varchar(32) not null,
-    desire_jd_type varchar(32) not null,
-    desire_jd_salary_id varchar(32) not null,
-    desire_jd_industry varchar(32) not null,
-    desire_city varchar(32) not null,
-    experience  varchar(1000) not null,
-    start_work_date Year not null,
-    current_salary_id varchar(32) not null,
-    cur_industry varchar(32) not null,
-    cur_jd_type varchar(32) not null
+    live_city   varchar(320) not null,
+    degree      varchar(320) not null,
+    desire_jd_type varchar(320) not null,
+    desire_jd_salary_id varchar(320) not null,
+    desire_jd_industry varchar(320) not null,
+    desire_city varchar(320) not null,
+    experience  varchar(10000) not null,
+    start_work_date varchar(4) not null,
+    current_salary_id varchar(320) not null,
+    cur_industry varchar(320) not null,
+    cur_jd_type varchar(320) not null
 
 ) engine=Innodb comment '简历表';
 alter table Resume add column major varchar(32);
@@ -147,13 +146,13 @@ create table salary_table
 insert
 salary_table (category,salary_id)
 VALUES
-    ('0000000000','面议'),
+    ('0','面议'),
     ('0000001000','1000元以下'),
-    ('0100002000','1000-2000元/月'),
-    ('0200104000','2001-4000元/月'),
-    ('0400106000','4001-6000元/月'),
-    ('0600108000','6001-8000元/月'),
-    ('0800110000','8001-10000元/月'),
+    ('100002000','1000-2000元/月'),
+    ('200104000','2001-4000元/月'),
+    ('400106000','4001-6000元/月'),
+    ('600108000','6001-8000元/月'),
+    ('800110000','8001-10000元/月'),
     ('100001150000','100000元以上'),
     ('1000115000','10001-15000元/月'),
     ('1500120000','15000-20000元/月'),

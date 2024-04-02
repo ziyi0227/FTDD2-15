@@ -23,7 +23,7 @@ public interface IJobTableService extends IService<JobTable> {
 
     List<JobTable> listById(String token);
 
-    int deliver(Integer jobId);
+    int deliver(String jobId);
 
     Map<String, Object> getDeliverList(int pageNo, int pageSize);
 

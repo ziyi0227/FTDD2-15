@@ -24,7 +24,7 @@ import java.util.Map;
 public class FavorServiceImpl extends ServiceImpl<FavorMapper, Favor> implements IFavorService {
 
     @Override
-    public int setFavor(Integer jobId){
+    public int setFavor(String jobId){
         Map<String,Object> map= ThreadLocalUtil.get();
         String id= (String) map.get("id");
         //查询是否收藏过

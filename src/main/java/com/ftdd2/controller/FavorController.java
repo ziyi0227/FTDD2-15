@@ -57,7 +57,7 @@ public class FavorController {
      */
     @ApiOperation("用户操作（收藏）")
     @PutMapping("/{jobId}")
-    public Result<?>setFavor(@PathVariable Integer jobId){
+    public Result<?>setFavor(@PathVariable String jobId){
         int choice= favorService.setFavor(jobId);
         if(choice==0)
         {

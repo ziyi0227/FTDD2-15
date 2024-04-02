@@ -140,7 +140,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, User> implements 
         wrapper.eq(Favor::getUserId, id);
         List<Favor> list = favorMapper.selectList(wrapper);
 
-        List<Integer> jobIdList = list.stream()
+        List<String > jobIdList = list.stream()
                                       .map(favor -> {return favor.getJobId();})
                                       .collect(Collectors.toList());
 

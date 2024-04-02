@@ -46,5 +46,6 @@ public interface ActionTableMapper extends BaseMapper<ActionTable> {
     List<Map<String, Long>>  getNowMajor(LocalDateTime time);
 
 
+    @MapKey("major")
     Map<String, Long> getHotMajor(LocalDateTime day);
 }

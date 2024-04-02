@@ -57,7 +57,7 @@ public class Resume implements Serializable {
 
     private String experience;
 
-    private Year startWorkDate;
+    private String startWorkDate;
 
     private String currentSalaryId;
 

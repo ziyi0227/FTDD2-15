@@ -45,7 +45,7 @@ public class JobTableServiceImpl extends ServiceImpl<JobTableMapper, JobTable> i
 
         Map<String, Object> claims = JwtUtil.parseToken(token);
         String userId = (String) claims.get("id");
-        Integer jobId = jobTable.getId();
+        String jobId = jobTable.getId();
         if (jobId != null) {
             userJobMapper.insert(new UserJob(null, userId, jobId));
         }
@@ -65,7 +65,7 @@ public class JobTableServiceImpl extends ServiceImpl<JobTableMapper, JobTable> i
         wrapper.eq(UserJob::getUserId, userId);
         List<UserJob> userJobList = userJobMapper.selectList(wrapper);
 
-        List<Integer> jobIdList = userJobList.stream()
+        List<String> jobIdList = userJobList.stream()
                 .map(userJob -> {
                     return userJob.getJobId();
                 })
@@ -83,7 +83,7 @@ public class JobTableServiceImpl extends ServiceImpl<JobTableMapper, JobTable> i
     }
 
     @Override
-    public int deliver(Integer jobId) {
+    public int deliver(String jobId) {
         //取得当前用户id
         Map<String, Object> map = ThreadLocalUtil.get();
         String userId = (String) map.get("id");
