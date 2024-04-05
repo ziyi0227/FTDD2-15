@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.ftdd2.common.vo.Result;
 import com.ftdd2.domain.entity.Resume;
 import com.ftdd2.service.IResumeService;
+import com.ftdd2.service.IUsersService;
 import com.ftdd2.utils.ThreadLocalUtil;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +29,8 @@ import java.util.Map;
 public class ResumeController {
     @Resource
     private IResumeService resumeService;
+    @Resource
+    private IUsersService usersService;
 
     /**
      * @param
@@ -41,6 +44,11 @@ public class ResumeController {
         wrapper.eq(Resume::getUserId, id);
         Resume resume = resumeService.getOne(wrapper);
         return Result.success(resume.getId());
+    }
+    @GetMapping("/getMyResume")
+    public Result<?>getMyResume(){
+       Resume resume= usersService.getMyResume();
+       return Result.success(resume);
     }
 
 }

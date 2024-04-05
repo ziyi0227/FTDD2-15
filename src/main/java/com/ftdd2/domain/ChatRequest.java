@@ -25,7 +25,7 @@ public class ChatRequest {
         public List<Chat> messages;
         Input(String q){
             ArrayList<ChatRequest.Chat> chats = new ArrayList<>();
-            chats.add(new Chat("system","你是达摩院的生活助手机器人。"));
+//            chats.add(new Chat("system","你是达摩院的生活助手机器人。"));
             chats.add(new Chat("user",q));
             messages = chats;
         }

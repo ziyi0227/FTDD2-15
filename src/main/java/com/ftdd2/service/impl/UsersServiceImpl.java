@@ -412,4 +412,13 @@ public Map<String, Object> getActionListHr() {
         return data;
     }
 
+    @Override
+    public Resume getMyResume() {
+     Map<String,Object> map=  ThreadLocalUtil.get();
+        String id = (String) map.get("id");
+        LambdaQueryWrapper<Resume>wrapper=new LambdaQueryWrapper<>();
+        wrapper.eq(Resume::getUserId,id);
+        return resumeMapper.selectOne(wrapper);
+    }
+
 }
