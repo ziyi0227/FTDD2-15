@@ -15,5 +15,5 @@ import java.util.Map;
  */
 public interface IActionTableService extends IService<ActionTable> {
 
-    Map<String,Long> getTitleCount(String jobTitle);
+    Map<String,Long> getTitleCount(String jd_sub_type);
 }

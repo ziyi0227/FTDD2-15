@@ -42,7 +42,7 @@ create table Job_table
     max_salary  int comment '最高薪资',
     start_date  date comment '开始时间',
     end_date    date comment '结束时间',
-    is_travel  tinyint default 0 check (is_travel in (0, 1)) comment '是否出差,0不出差，1出差',
+    is_travel  tinyint default 0  comment '是否出差,0不出差，1出差',
     min_years   varchar(10) comment '最低工作年限',
     min_education varchar(32) comment '最低学历',
     title_skill varchar(128) comment '技能要求',
@@ -51,6 +51,7 @@ create table Job_table
     primary Key (id)
 )engine=Innodb comment '招聘信息表';
 --  --
+alter table job_table add column ordered_id varchar(128);
 
 drop table if exists action_table;
 create table action_table

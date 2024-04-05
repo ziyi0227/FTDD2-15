@@ -28,18 +28,18 @@ public interface ActionTableMapper extends BaseMapper<ActionTable> {
 
 
     @Select("select count(*) from action_table,job_table " +
-            "where job_table.jd_title = #{jobTitle} " +
-            "and month(updateTime) = #{currentMonth} " +
+            "where job_table.jd_sub_type = #{jd_sub_type} " +
+            "and month(action_table.update_time) = #{currentMonth} " +
             "and action_table.job_id = job_table.id " +
             "and action_table.delivered = 1")
-    Long getDeliverCount(String jobTitle, int currentMonth);
+    Long getDeliverCount(String jd_sub_type, int currentMonth);
 
 
     @Select("select count(*) from favor,job_table " +
-            "where job_table.jd_title = #{jobTitle} " +
-            "and month(updateTime) = #{currentMonth} " +
+            "where job_table.jd_sub_type = #{jd_sub_type} " +
+            "and month(favor.update_time) = #{currentMonth} " +
             "and favor.job_id = job_table.id " )
-    Long getCollectCount(String jobTitle, int currentMonth);
+    Long getCollectCount(String jd_sub_type, int currentMonth);
 
 
     @MapKey("major")

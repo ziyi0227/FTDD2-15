@@ -18,5 +18,5 @@ public interface UserJobMapper extends BaseMapper<UserJob> {
 
 
     @Select("select job_id from ft_demo.user_job where user_id=#{id}")
-    List<Long> getJobList(String id);
+    List<String> getJobList(String id);
 }

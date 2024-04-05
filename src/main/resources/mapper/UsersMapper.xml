@@ -8,4 +8,9 @@
         where id in
        (select job_id from ft_demo.favor where user_id=#{id})
     </select>
+    <select id="getAllFavor" resultType="com.ftdd2.domain.entity.JobTable">
+        select * from ft_demo.job_table
+        where id in
+              (select job_id from ft_demo.favor where user_id=#{id})
+    </select>
 </mapper>

@@ -26,11 +26,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -137,20 +134,21 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, User> implements 
         String id = (String) map.get("id");
 
         LambdaQueryWrapper<Favor> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Favor::getUserId, id);
-        List<Favor> list = favorMapper.selectList(wrapper);
+        List<JobTable>list =userMapper.getAllFavor(id);
+//        wrapper.eq(Favor::getUserId, id);
+//        List<Favor> list = favorMapper.selectList(wrapper);
 
-        List<String > jobIdList = list.stream()
-                                      .map(favor -> {return favor.getJobId();})
-                                      .collect(Collectors.toList());
-
-        List<JobTable> jobList = new ArrayList<>();
-        if(!jobIdList.isEmpty()){
-            LambdaQueryWrapper<JobTable> jobWrapper = new LambdaQueryWrapper<>();
-            jobWrapper.in(JobTable::getId, jobIdList);
-            jobList = jobTableMapper.selectList(jobWrapper);
-        }
-        return jobList;
+//        List<String> jobIdList = list.stream()
+//                                      .map(favor -> {return favor.getJobId();})
+//                                      .collect(Collectors.toList());
+//
+//        List<JobTable> jobList = new ArrayList<>();
+//        if(!jobIdList.isEmpty()){
+//            LambdaQueryWrapper<JobTable> jobWrapper = new LambdaQueryWrapper<>();
+//            jobWrapper.in(JobTable::getId, jobIdList);
+//            jobList = jobTableMapper.selectList(jobWrapper);
+//        }
+        return list;
     }
 
 
@@ -238,30 +236,67 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, User> implements 
         return result;
     }
 
-    @Override
-    public Map<String, Object> getResumeList(Long pageNo, Long pageSize) {
-        LambdaQueryWrapper<Resume> wrapper = new LambdaQueryWrapper<>();
-        //获取当前hr id
-        Map<String, Object> map = get();
-        String id = (String) map.get("id");
-        //获取hr发布过的招聘信息
-        List<Long> jobIdList=userJobMapper.getJobList(id);
-        //根据招聘信息id去Action表去找到简历id
-        LambdaQueryWrapper<ActionTable> queryWrapper=new LambdaQueryWrapper<>();
-        queryWrapper.in(ActionTable::getJobId,jobIdList)
-                .eq(ActionTable::getDelivered,"1");
-        List<ActionTable> actionTables = actionTableMapper.selectList(queryWrapper);
-        //根据简历id去resume查找
-        List<String> userIdList=actionTables.stream().map(ActionTable::getUserId).toList();
-//        List<Resume>resumeList = resumeMapper.selectByIds(userIdList);
-        //分页
-        PageHelper.startPage(pageNo.intValue(),pageSize.intValue());
-        Page<Resume> page =  resumeMapper.selectByIds(userIdList);
-        Map<String, Object> data = new HashMap<>();
-        data.put("total", page.getTotal());
-        data.put("rows", page.getResult());
-        return data;
+//    @Override
+//    public Map<String, Object> getResumeList(Long pageNo, Long pageSize) {
+//        LambdaQueryWrapper<Resume> wrapper = new LambdaQueryWrapper<>();
+//        //获取当前hr id
+//        Map<String, Object> map = get();
+//        String id = (String) map.get("id");
+//        //获取hr发布过的招聘信息
+//        List<String> jobIdList=userJobMapper.getJobList(id);
+//        //根据招聘信息id去Action表去找到简历id
+//        LambdaQueryWrapper<ActionTable> queryWrapper=new LambdaQueryWrapper<>();
+//        queryWrapper.in(ActionTable::getJobId,jobIdList)
+//                .eq(ActionTable::getDelivered,"1");
+//        List<ActionTable> actionTables = actionTableMapper.selectList(queryWrapper);
+//        //根据简历id去resume查找
+//        List<String> userIdList=actionTables.stream().map(ActionTable::getUserId).toList();
+////        List<Resume>resumeList = resumeMapper.selectByIds(userIdList);
+//        //分页
+//        PageHelper.startPage(pageNo.intValue(),pageSize.intValue());
+//        Page<Resume> page =  resumeMapper.selectByIds(userIdList);
+//        Map<String, Object> data = new HashMap<>();
+//        data.put("total", page.getTotal());
+//        data.put("rows", page.getResult());
+//        return data;
+//    }
+@Override
+public Map<String, Object> getResumeList(Long pageNo, Long pageSize) {
+    LambdaQueryWrapper<Resume> wrapper = new LambdaQueryWrapper<>();
+    // 获取当前 HR id
+    Map<String, Object> map = get();
+    if (map == null || !map.containsKey("id")) {
+        // 处理获取 HR ID 失败的情况
+        // 这里可以抛出异常、返回空值或者做其他处理
+        return Collections.emptyMap();
     }
+    String id = (String) map.get("id");
+    // 获取 HR 发布过的招聘信息
+    List<String> jobIdList = userJobMapper.getJobList(id);
+    if (jobIdList == null || jobIdList.isEmpty()) {
+        // 处理 HR 没有发布过招聘信息的情况
+        return Collections.emptyMap();
+    }
+    // 根据招聘信息 id 去 Action 表去找到简历 id
+    LambdaQueryWrapper<ActionTable> queryWrapper = new LambdaQueryWrapper<>();
+    queryWrapper.in(ActionTable::getJobId, jobIdList)
+            .eq(ActionTable::getDelivered, "1");
+    List<ActionTable> actionTables = actionTableMapper.selectList(queryWrapper);
+    if (actionTables.isEmpty()) {
+        // 处理找不到对应简历的情况
+        return Collections.emptyMap();
+    }
+    // 根据简历 id 去 resume 查找
+    List<String> userIdList = actionTables.stream().map(ActionTable::getUserId).toList();
+    // 分页
+    PageHelper.startPage(pageNo != null ? pageNo.intValue() : 1, pageSize != null ? pageSize.intValue() : 10);
+    Page<Resume> page = resumeMapper.selectByIds(userIdList);
+    Map<String, Object> data = new HashMap<>();
+    data.put("total", page.getTotal());
+    data.put("rows", page.getResult());
+    return data;
+}
+
 
     @Override
     public void insertResume(Resume resume) {
@@ -271,52 +306,110 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, User> implements 
         resumeMapper.insert(resume);
     }
 
-    @Override
-    public Map<String, Object> getActionListHr() {
-        //取得id
-        Map<String,Object>map = ThreadLocalUtil.get();
-        String id=(String)map.get("id");
-        LambdaQueryWrapper<ActionTable> wrapper=new LambdaQueryWrapper<>();
-        wrapper.eq(ActionTable::getUserId,id)
-                .eq(ActionTable::getSatisfied,1);
-
-        //满意的简历数量
-        Long satisfiedCount = actionTableMapper.selectCount(wrapper);
-
-        //发布招聘信息数量
-        LambdaQueryWrapper<UserJob> jobWrapper=new LambdaQueryWrapper<>();
-        jobWrapper.eq(UserJob::getUserId,id);
-        Long jobCount = userJobMapper.selectCount(jobWrapper);
-        //投递人数
-        wrapper.clear();
-        //先取得自己发布的简历id
-        List<Long> jobIdList=userJobMapper.getJobList(id);
-        //根据招聘信息id去Action表去找到简历id
-        LambdaQueryWrapper<ActionTable> queryWrapper=new LambdaQueryWrapper<>();
-        queryWrapper.in(ActionTable::getJobId,jobIdList)
-                .eq(ActionTable::getDelivered,"1");
-        List<ActionTable> actionTables = actionTableMapper.selectList(queryWrapper);
-        int deliveredCount = actionTables.size();
-        //包装
-        Map<String, Object> result = new HashMap<>();
-        result.put("satisfiedCount", satisfiedCount);
-        result.put("jobCount", jobCount);
-        result.put("deliveredCount", deliveredCount);
-        return result;
+//    @Override
+//    public Map<String, Object> getActionListHr() {
+//        //取得id
+//        Map<String,Object>map = ThreadLocalUtil.get();
+//        String id=(String)map.get("id");
+//        LambdaQueryWrapper<ActionTable> wrapper=new LambdaQueryWrapper<>();
+//        wrapper.eq(ActionTable::getUserId,id)
+//                .eq(ActionTable::getSatisfied,1);
+//
+//        //满意的简历数量
+//        Long satisfiedCount = actionTableMapper.selectCount(wrapper);
+//
+//        //发布招聘信息数量
+//        LambdaQueryWrapper<UserJob> jobWrapper=new LambdaQueryWrapper<>();
+//        jobWrapper.eq(UserJob::getUserId,id);
+//        Long jobCount = userJobMapper.selectCount(jobWrapper);
+//        //投递人数
+//        wrapper.clear();
+//        //先取得自己发布的简历id
+//        List<String> jobIdList=userJobMapper.getJobList(id);
+//        //根据招聘信息id去Action表去找到简历id
+//        LambdaQueryWrapper<ActionTable> queryWrapper=new LambdaQueryWrapper<>();
+//        queryWrapper.in(ActionTable::getJobId,jobIdList)
+//                .eq(ActionTable::getDelivered,"1");
+//        List<ActionTable> actionTables = actionTableMapper.selectList(queryWrapper);
+//        int deliveredCount = actionTables.size();
+//        //包装
+//        Map<String, Object> result = new HashMap<>();
+//        result.put("satisfiedCount", satisfiedCount);
+//        result.put("jobCount", jobCount);
+//        result.put("deliveredCount", deliveredCount);
+//        return result;
+//    }
+@Override
+public Map<String, Object> getActionListHr() {
+    // 取得id
+    Map<String, Object> map = ThreadLocalUtil.get();
+    if (map == null || !map.containsKey("id")) {
+        // 处理获取 id 失败的情况
+        // 这里可以抛出异常、返回空值或者做其他处理
+        return Collections.emptyMap();
     }
+    String id = (String) map.get("id");
+
+    // 计算满意的简历数量
+    LambdaQueryWrapper<ActionTable> wrapper = new LambdaQueryWrapper<>();
+    wrapper.eq(ActionTable::getUserId, id)
+            .eq(ActionTable::getSatisfied, 1);
+    Long satisfiedCount = actionTableMapper.selectCount(wrapper);
+
+    // 计算发布招聘信息数量
+    LambdaQueryWrapper<UserJob> jobWrapper = new LambdaQueryWrapper<>();
+    jobWrapper.eq(UserJob::getUserId, id);
+    Long jobCount = userJobMapper.selectCount(jobWrapper);
+
+    // 计算投递人数
+    List<String> jobIdList = userJobMapper.getJobList(id);
+    if (jobIdList == null || jobIdList.isEmpty()) {
+        // 处理没有发布招聘信息的情况
+        return Collections.emptyMap();
+    }
+    LambdaQueryWrapper<ActionTable> queryWrapper = new LambdaQueryWrapper<>();
+    queryWrapper.in(ActionTable::getJobId, jobIdList)
+            .eq(ActionTable::getDelivered, "1");
+    List<ActionTable> actionTables = actionTableMapper.selectList(queryWrapper);
+    int deliveredCount = actionTables.size();
+
+    // 包装结果
+    Map<String, Object> result = new HashMap<>();
+    result.put("satisfiedCount", satisfiedCount);
+    result.put("jobCount", jobCount);
+    result.put("deliveredCount", deliveredCount);
+    return result;
+}
+
 
     @Override
     public Map<String, Object> getJobList(int pageNo, int pageSize) {
         Map<String, Object> map = ThreadLocalUtil.get();
+        if (map == null || !map.containsKey("id")) {
+            // 处理获取 id 失败的情况
+            // 这里可以抛出异常、返回空值或者做其他处理
+            return Collections.emptyMap();
+        }
         String id = (String) map.get("id");
-        List<Long> jobIdList=userJobMapper.getJobList(id);
-        PageHelper.startPage(pageNo,pageSize);
-        LambdaQueryWrapper<JobTable> wrapper=new LambdaQueryWrapper<>();
-        wrapper.in(JobTable::getId,jobIdList);
+
+        // 获取当前 HR 发布的招聘信息列表
+        List<String> jobIdList = userJobMapper.getJobList(id);
+        if (jobIdList == null || jobIdList.isEmpty()) {
+            // 处理当前 HR 未发布招聘信息的情况
+            return Collections.emptyMap();
+        }
+
+        // 分页查询招聘信息
+        PageHelper.startPage(pageNo, pageSize);
+        LambdaQueryWrapper<JobTable> wrapper = new LambdaQueryWrapper<>();
+        wrapper.in(JobTable::getId, jobIdList);
         List<JobTable> jobList = jobTableMapper.selectList(wrapper);
+
+        // 包装结果
         Map<String, Object> data = new HashMap<>();
         data.put("total", jobList.size());
         data.put("rows", jobList);
         return data;
     }
+
 }

@@ -110,6 +110,8 @@ public class JobTable implements Serializable {
      */
     private String quality;
 
+    private Integer orderedId;
+
 //    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 //    private LocalDateTime updateTime;//更新时间
 

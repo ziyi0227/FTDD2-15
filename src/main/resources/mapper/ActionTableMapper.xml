@@ -6,16 +6,18 @@
         SELECT job_id FROM action_table WHERE delivered = 1 AND user_id = #{id}
     </select>
     <select id="getNowTitle" resultType="java.lang.String">
-        select jd_title
+        select jd_sub_type,count(*) as number
         from job_table,
              favor,
              action_table
         where job_table.id = favor.job_id
            or (action_table.delivered = 1
             and job_table.id = action_table.job_id)
-        group by jd_title
+#           and MONTH(action_table.updateTime) = '4'
+        group by jd_sub_type
         order by count(*) desc
         limit 5
+
     </select>
     <select id="getNowMajor" resultType="java.util.Map" parameterType="java.time.LocalDateTime">
         select resume.major, count(*) as count
@@ -24,23 +26,29 @@
              resume
         where resume.user_id =action_table.user_id
            and (action_table.delivered = 1
-            and action_table.updateTime > #{time})
+            and action_table.update_time > #{time})
         group by major
         order by count desc
         limit 3
     </select>
     <select id="getHotMajor" resultType="java.util.Map" parameterType="java.time.LocalDateTime">
         select resume.major, count(*) as count
-        from
-             action_table,
+        from action_table,
              resume
-        where resume.user_id =action_table.user_id
-           and (action_table.delivered = 1
-            and action_table.updateTime > #{time})
+        where resume.user_id = action_table.user_id
+          and (action_table.delivered = 1
+            and action_table.update_time> #{time})
         group by major
         order by count desc
         limit 1
     </select>
+<!--    <select id="getDeliverCount" resultType="java.lang.Long">-->
+<!--        select count(*) from job_table,action_table-->
+<!--        where action_table.job_id=job_table.id-->
+<!--        and month(updateTime) =#{currentMonth}-->
+<!--        and job_table.jd_sub_type = #{jobTitle}-->
+<!--        and action_table.delivered ='1'-->
+<!--    </select>-->
 
 
 </mapper>

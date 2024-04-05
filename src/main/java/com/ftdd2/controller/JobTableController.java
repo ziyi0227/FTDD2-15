@@ -30,6 +30,8 @@ public class JobTableController {
     @Autowired
     private IJobTableService jobTableService;
 
+
+
     @PostMapping("/add")
     public Result<Map<String, Object>> addJobTable(@RequestBody JobTable jobTable, @RequestHeader("token") String token) {
         jobTableService.addJobTable(jobTable, token);

@@ -25,8 +25,8 @@ public class ActionTable implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "id", type = IdType.ASSIGN_UUID)
-    private String id;
+//    @TableId(value = "id", type = IdType.ASSIGN_UUID)
+//    private String id;
 
     private String userId;
 
@@ -38,6 +38,6 @@ public class ActionTable implements Serializable {
 
     private String satisfied; //满意（hr）
 
-    private DateTime createTime;
+    private DateTime updateTime;
 
 }

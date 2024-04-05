@@ -34,12 +34,12 @@ public class StatisticController {
 
     /**
      * 获取热门职位的投递量和收藏量每月之和
-     * @param jobTitle
+     * @param jd_sub_type
      * @return
      */
     @GetMapping("/getTitleCount")
-    public Result<Map<String,Long>> getTitleCount(@RequestParam String jobTitle) {
-        return Result.success(actionTableService.getTitleCount(jobTitle));
+    public Result<Map<String,Long>> getTitleCount(@RequestParam String jd_sub_type) {
+        return Result.success(actionTableService.getTitleCount(jd_sub_type));
     }
 
     /**

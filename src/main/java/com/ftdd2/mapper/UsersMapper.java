@@ -22,4 +22,6 @@ public interface UsersMapper extends BaseMapper<User> {
 
 
     Page<JobTable> getFavorList(int pageNo, int pageSize, String id);
+
+    List<JobTable> getAllFavor(String id);
 }
