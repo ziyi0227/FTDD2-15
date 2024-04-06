@@ -1,11 +1,17 @@
 package com.ftdd2.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.io.Serializable;
-import java.util.List;
 
+import java.awt.*;
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -47,7 +53,18 @@ public class MenuTable implements Serializable {
 
     private Boolean hidden;
 
-    private List<MenuTable>children;
+    @TableField(exist = false)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<MenuTable> children;
+
+    @TableField(exist = false)
+    private Map<String,Object> meta;
+    public Map<String,Object> getMeta(){
+        meta = new HashMap<>();
+        meta.put("title",title);
+        meta.put("icon",icon);
+        return meta;
+    }
 
 
 }
