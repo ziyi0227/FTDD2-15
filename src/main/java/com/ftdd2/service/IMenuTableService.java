@@ -3,6 +3,8 @@ package com.ftdd2.service;
 import com.ftdd2.domain.entity.MenuTable;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务类
@@ -13,4 +15,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IMenuTableService extends IService<MenuTable> {
 
+    List<MenuTable> getMenuListByUserId(String id);
 }

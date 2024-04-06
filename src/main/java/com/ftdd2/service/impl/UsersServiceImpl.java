@@ -12,6 +12,7 @@ import com.ftdd2.domain.entity.JobTable;
 import com.ftdd2.mapper.ActionTableMapper;
 import com.ftdd2.mapper.FavorMapper;
 import com.ftdd2.mapper.JobTableMapper;
+import com.ftdd2.service.IMenuTableService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.ftdd2.service.IUsersService;
@@ -48,6 +49,8 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, User> implements 
     private RedisTemplate redisTemplate;
     @Autowired
     private UsersMapper userMapper;
+    @Resource
+    private UserRoleMapper userRoleMapper;
 
     @Resource
     private ActionTableMapper actionTableMapper;
@@ -60,6 +63,8 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, User> implements 
 
     @Resource
     private UserJobMapper userJobMapper;
+    @Resource
+    private IMenuTableService menuTableService;
 
     @Override
     public Map<String, Object> login(User user) {
@@ -83,6 +88,8 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, User> implements 
             //返回数据
             Map<String, Object> data = new HashMap<>();
             data.put("token", token);
+            List<MenuTable>menuTableList = menuTableService.getMenuListByUserId(loginUser.getId());
+            data.put("menuList",menuTableList);
             return data;
         }
         return null;
@@ -167,6 +174,9 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, User> implements 
             data.put("sex", user.getSex());
             data.put("live_city",user.getLiveCity());
             data.put("avatar",user.getAvatar());
+
+            List<MenuTable>menuList = menuTableService.getMenuListByUserId(user.getId());
+            data.put("menuList",menuList);
 
 
 //            List<String> roleList = this.baseMapper.getRoleNameByUserId(id);
