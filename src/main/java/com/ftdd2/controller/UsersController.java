@@ -55,6 +55,15 @@ public class UsersController {
     @Resource
     private IResumeService resumeService;
 
+
+    @GetMapping("/userType")
+    public int getUserType(){
+      Map<String,Object>map =  ThreadLocalUtil.get();
+      String id= (String) map.get("id");
+      User user = usersService.getById(id);
+        return user.getType();
+    }
+
     /**
      * @param user
      * @return

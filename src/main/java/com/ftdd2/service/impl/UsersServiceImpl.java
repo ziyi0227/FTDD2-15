@@ -90,6 +90,13 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, User> implements 
             data.put("token", token);
             List<MenuTable>menuTableList = menuTableService.getMenuListByUserId(loginUser.getId());
             data.put("menuList",menuTableList);
+            UserRole userRole=new UserRole();
+            userRole.setRoleId(loginUser.getType());
+            userRole.setUserId(loginUser.getId());
+            LambdaQueryWrapper<UserRole> wrapper1=new LambdaQueryWrapper<>();
+            wrapper1.eq(UserRole::getUserId,loginUser.getId());
+            if(userRoleMapper.selectOne(wrapper1)==null)
+            {userRoleMapper.insert(userRole);}
             return data;
         }
         return null;
