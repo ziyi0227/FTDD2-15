@@ -37,13 +37,13 @@ public class ResumeController {
      * @return
      */
     @GetMapping("/getResumeId")
-    public Result<?> getResumeId() {
+    public int getResumeId() {
         Map<String, Object> map = ThreadLocalUtil.get();
         String id = (String) map.get("id");
         LambdaQueryWrapper<Resume> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Resume::getUserId, id);
         Resume resume = resumeService.getOne(wrapper);
-        return Result.success(resume.getId());
+        return resume.getId();
     }
     @GetMapping("/getMyResume")
     public Result<?>getMyResume(){
